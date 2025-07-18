@@ -497,5 +497,212 @@
       "relation_type": "dependency",
       "ifc_relationship": "IfcRelAssignsToResource"
     }
+  },
+  
+  "hierarchical_relationships": {
+    "project_to_site": {
+      "description": "Project contains sites in spatial decomposition hierarchy per IFC standards",
+      "relationship_type": "spatial_decomposition",
+      "cardinality": "one_to_many",
+      "ifc_relationship": "IfcRelAggregates",
+      "constraints": ["Project must have at least one Site", "Sites must be geographically distinct"]
+    },
+    "site_to_building": {
+      "description": "Site contains buildings following IFC spatial structure",
+      "relationship_type": "spatial_decomposition",
+      "cardinality": "one_to_many", 
+      "ifc_relationship": "IfcRelAggregates",
+      "constraints": ["Site may contain multiple buildings", "Buildings must be within site boundaries"]
+    },
+    "building_to_storey": {
+      "description": "Building decomposes into storeys per IFC spatial hierarchy",
+      "relationship_type": "spatial_decomposition",
+      "cardinality": "one_to_many",
+      "ifc_relationship": "IfcRelAggregates", 
+      "constraints": ["Building must have at least one storey", "Storeys must be vertically ordered"]
+    },
+    "storey_to_space": {
+      "description": "Building storey contains spaces following IFC spatial containment",
+      "relationship_type": "spatial_containment",
+      "cardinality": "one_to_many",
+      "ifc_relationship": "IfcRelAggregates",
+      "constraints": ["Storey may contain multiple spaces", "Spaces must be within storey boundaries"]
+    },
+    "space_to_element": {
+      "description": "Spaces contain building elements per IFC spatial structure",
+      "relationship_type": "spatial_containment", 
+      "cardinality": "one_to_many",
+      "ifc_relationship": "IfcRelContainedInSpatialStructure",
+      "constraints": ["Elements must be assigned to appropriate spaces", "Load-bearing elements may span multiple spaces"]
+    },
+    "building_to_component": {
+      "description": "Building contains components through spatial structure hierarchy",
+      "relationship_type": "composition",
+      "cardinality": "one_to_many",
+      "ifc_relationship": "IfcRelContainedInSpatialStructure",
+      "constraints": ["Components must comply with IFC element classification", "Components must have valid spatial placement"]
+    },
+    "component_to_system": {
+      "description": "Components participate in building systems per IFC system organization",
+      "relationship_type": "group_assignment",
+      "cardinality": "many_to_many", 
+      "ifc_relationship": "IfcRelAssignsToGroup",
+      "constraints": ["Components may belong to multiple systems", "System membership must be functionally consistent"]
+    },
+    "system_to_process": {
+      "description": "Systems enable operational processes following IFC task modeling",
+      "relationship_type": "enablement",
+      "cardinality": "one_to_many",
+      "ifc_relationship": "IfcRelAssignsToResource", 
+      "constraints": ["Systems must provide required functionality for processes", "Process requirements must match system capabilities"]
+    }
+  },
+  
+  "semantic_relationships": {
+    "spatial_hierarchy": [
+      {"parent": "IfcProject", "child": "IfcSite", "relationship": "aggregates", "ifc_rel": "IfcRelAggregates"},
+      {"parent": "IfcSite", "child": "IfcBuilding", "relationship": "aggregates", "ifc_rel": "IfcRelAggregates"},
+      {"parent": "IfcBuilding", "child": "IfcBuildingStorey", "relationship": "aggregates", "ifc_rel": "IfcRelAggregates"},
+      {"parent": "IfcBuildingStorey", "child": "IfcSpace", "relationship": "aggregates", "ifc_rel": "IfcRelAggregates"}
+    ],
+    "element_containment": [
+      {"container": "IfcSpace", "element": "IfcWall", "relationship": "contains", "ifc_rel": "IfcRelContainedInSpatialStructure"},
+      {"container": "IfcSpace", "element": "IfcSlab", "relationship": "contains", "ifc_rel": "IfcRelContainedInSpatialStructure"},
+      {"container": "IfcSpace", "element": "IfcBeam", "relationship": "contains", "ifc_rel": "IfcRelContainedInSpatialStructure"},
+      {"container": "IfcSpace", "element": "IfcColumn", "relationship": "contains", "ifc_rel": "IfcRelContainedInSpatialStructure"},
+      {"container": "IfcSpace", "element": "IfcDoor", "relationship": "contains", "ifc_rel": "IfcRelContainedInSpatialStructure"},
+      {"container": "IfcSpace", "element": "IfcWindow", "relationship": "contains", "ifc_rel": "IfcRelContainedInSpatialStructure"}
+    ],
+    "system_organization": [
+      {"system": "IfcStructuralSystem", "component": "IfcStructuralMember", "relationship": "groups", "ifc_rel": "IfcRelAssignsToGroup"},
+      {"system": "IfcBuildingSystem", "component": "IfcDistributionElement", "relationship": "groups", "ifc_rel": "IfcRelAssignsToGroup"},
+      {"system": "IfcDistributionSystem", "component": "IfcDistributionFlowElement", "relationship": "groups", "ifc_rel": "IfcRelAssignsToGroup"}
+    ],
+    "functional_relationships": [
+      {"enabler": "Component", "enabled": "System", "relationship": "enables", "ifc_context": "functional_assignment"},
+      {"system": "System", "process": "Process", "relationship": "supports", "ifc_context": "resource_assignment"},
+      {"process": "Process", "component": "Component", "relationship": "requires", "ifc_context": "task_resource"}
+    ],
+    "connectivity": [
+      {"source": "IfcElement", "target": "IfcElement", "relationship": "connects_to", "ifc_rel": "IfcRelConnectsElements"},
+      {"source": "IfcPort", "target": "IfcElement", "relationship": "connects_to", "ifc_rel": "IfcRelConnectsPortToElement"},
+      {"source": "IfcDistributionPort", "target": "IfcDistributionElement", "relationship": "connects_to", "ifc_rel": "IfcRelConnectsPortToElement"}
+    ]
+  },
+  
+  "frame_integration_patterns": {
+    "ifc_spatial_instantiation": {
+      "description": "Pattern for creating IFC-compliant building instances following spatial decomposition hierarchy",
+      "hierarchy_path": ["IfcProject", "IfcSite", "IfcBuilding", "IfcBuildingStorey", "IfcSpace"],
+      "required_entities": ["IfcProject", "IfcSite", "IfcBuilding", "IfcBuildingStorey"],
+      "optional_entities": ["IfcSpace", "IfcBuildingElement"],
+      "mandatory_relationships": ["IfcRelAggregates", "IfcRelContainedInSpatialStructure"],
+      "constraints": [
+        "Project must be root of spatial hierarchy",
+        "Each level must aggregate its child levels via IfcRelAggregates", 
+        "Building elements must be contained via IfcRelContainedInSpatialStructure",
+        "All entities must have valid geometric representation",
+        "Property sets must conform to IFC schema requirements"
+      ]
+    },
+    "ifc_system_organization": {
+      "description": "Pattern for organizing building systems following IFC system modeling principles",
+      "hierarchy_path": ["IfcBuilding", "IfcSystem", "IfcBuildingElement"],
+      "required_entities": ["IfcSystem", "IfcBuildingElement"],
+      "optional_entities": ["IfcSystemType", "IfcPerformanceHistory"],
+      "mandatory_relationships": ["IfcRelAssignsToGroup", "IfcRelServicesBuildings"],
+      "constraints": [
+        "Systems must be assigned to buildings via IfcRelServicesBuildings",
+        "Components must be grouped into systems via IfcRelAssignsToGroup",
+        "System types must follow IFC predefined type enumerations",
+        "Distribution systems must include flow connectivity",
+        "Performance data must link to appropriate measurement standards"
+      ]
+    },
+    "ifc_process_modeling": {
+      "description": "Pattern for modeling building processes following IFC task and procedure standards",
+      "hierarchy_path": ["IfcProcess", "IfcTask", "IfcProcedure"],
+      "required_entities": ["IfcProcess"],
+      "optional_entities": ["IfcTask", "IfcProcedure", "IfcWorkPlan", "IfcWorkSchedule"],
+      "mandatory_relationships": ["IfcRelAssignsToProcess", "IfcRelSequence"],
+      "constraints": [
+        "Processes must be properly sequenced via IfcRelSequence",
+        "Resources must be assigned via IfcRelAssignsToProcess",
+        "Task durations must follow IFC time representation",
+        "Work calendars must be properly defined",
+        "Process outcomes must be measurable and trackable"
+      ]
+    }
+  },
+  
+  "annotation_guidelines": {
+    "ifc_hierarchy_annotation": {
+      "description": "Guidelines for annotating IFC spatial hierarchy following ISO 16739-1 standards",
+      "project_level": "Root container with project information, units, and coordinate systems",
+      "site_level": "Geographic context including terrain, climate, and site boundaries", 
+      "building_level": "Building envelope, classification, and primary functional zones",
+      "storey_level": "Horizontal subdivision with elevation data and access systems",
+      "space_level": "Functional spaces with use classification and occupancy requirements",
+      "element_level": "Individual building components with material, geometry, and performance data"
+    },
+    "ifc_property_annotation": {
+      "description": "Guidelines for applying IFC property sets and quantities",
+      "common_properties": "Apply Pset_*Common property sets to all relevant entities",
+      "type_properties": "Use type-specific property sets for detailed specifications",
+      "quantity_sets": "Include Qto_* quantity sets for measurement and calculation",
+      "custom_properties": "Define project-specific properties following IFC naming conventions",
+      "units_compliance": "Ensure all measurements use IFC-compliant unit definitions"
+    },
+    "ifc_relationship_annotation": {
+      "description": "Guidelines for modeling relationships between IFC entities",
+      "spatial_relationships": "Use IfcRelAggregates for decomposition, IfcRelContainedInSpatialStructure for containment",
+      "logical_relationships": "Apply IfcRelAssignsToGroup for system organization",
+      "connectivity_relationships": "Model physical connections via IfcRelConnectsElements",
+      "dependency_relationships": "Express functional dependencies through appropriate relationship entities",
+      "temporal_relationships": "Use IfcRelSequence for process and construction sequencing"
+    },
+    "ifc_classification_annotation": {
+      "description": "Guidelines for applying classification systems to IFC entities",
+      "uniclass_integration": "Apply Uniclass 2015 classification for UK projects",
+      "omniclass_integration": "Use OmniClass for North American projects", 
+      "cobie_compliance": "Ensure COBie data exchange compatibility",
+      "local_standards": "Apply relevant national or regional classification systems",
+      "custom_classification": "Define project-specific classification hierarchies when needed"
+    },
+    "frame_element_mapping": {
+      "description": "How semantic frame elements map to IFC properties and relationships",
+      "building_asset": "Maps to IfcBuilding with ownership and asset management properties",
+      "component_specifications": "Maps to IfcElementType and associated property sets",
+      "system_performance": "Maps to IfcPerformanceHistory and measurement data",
+      "process_requirements": "Maps to IfcTask resources and scheduling information",
+      "spatial_context": "Maps to IfcSpatialStructureElement hierarchy and placement"
+    }
+  },
+  
+  "ifc_compliance_validation": {
+    "schema_compliance": {
+      "description": "Validation rules for IFC schema conformance",
+      "entity_validation": "All entities must conform to IFC4 schema definitions",
+      "attribute_validation": "Required attributes must be populated with valid data types",
+      "relationship_validation": "Relationships must follow IFC cardinality constraints",
+      "geometry_validation": "Geometric representations must be mathematically valid",
+      "reference_validation": "All entity references must be resolvable within the model"
+    },
+    "modeling_best_practices": {
+      "description": "Best practices for IFC model quality and interoperability",
+      "geometric_precision": "Use appropriate geometric tolerance for project scale",
+      "spatial_organization": "Maintain clear spatial hierarchy with no orphaned elements",
+      "property_consistency": "Apply consistent property naming and value formats",
+      "classification_coverage": "Classify all relevant entities with appropriate systems",
+      "documentation_completeness": "Include sufficient metadata for model understanding"
+    },
+    "interoperability_requirements": {
+      "description": "Requirements for cross-platform IFC data exchange",
+      "mvd_compliance": "Conform to relevant Model View Definitions (MVDs)",
+      "software_compatibility": "Test import/export with target software platforms",
+      "data_integrity": "Maintain data consistency across exchange cycles",
+      "version_control": "Track model versions and change documentation",
+      "validation_reporting": "Generate compliance reports for quality assurance"
+    }
   }
 }
