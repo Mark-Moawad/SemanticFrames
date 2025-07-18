@@ -1,0 +1,195 @@
+{
+  "frame": "Capability",
+  "description": "Functional capability or skill that emerges from robot components and enables specific behaviors",
+  "lexical_units": [
+    "manipulation", "locomotion", "navigation", "sensing", "perception", "grasping",
+    "mobility", "dexterity", "precision", "autonomy", "learning", "adaptation",
+    "object recognition", "path planning", "obstacle avoidance", "collaboration",
+    "communication", "decision making", "reasoning", "planning"
+  ],
+  "frame_elements": {
+    "core": {
+      "Agent": {
+        "description": "The robot that possesses or exhibits the capability",
+        "semantic_type": "Physical_entity"
+      },
+      "Capability": {
+        "description": "The functional ability or skill being described",
+        "semantic_type": "State_of_affairs"
+      },
+      "Domain": {
+        "description": "The context or area where the capability applies",
+        "semantic_type": "Location"
+      }
+    },
+    "peripheral": {
+      "Enabler": {
+        "description": "The components or subsystems that enable this capability",
+        "semantic_type": "Physical_entity"
+      },
+      "Performance": {
+        "description": "Metrics describing how well the capability is executed",
+        "semantic_type": "Attribute"
+      },
+      "Degree": {
+        "description": "The level or extent of the capability (high, moderate, limited)",
+        "semantic_type": "Attribute"
+      },
+      "Method": {
+        "description": "The approach or technique used to realize the capability",
+        "semantic_type": "Means"
+      }
+    },
+    "extra_thematic": {
+      "Beneficiary": {
+        "description": "Who or what benefits from the robot having this capability",
+        "semantic_type": "Sentient"
+      },
+      "Condition": {
+        "description": "Environmental or operational conditions required for capability",
+        "semantic_type": "State_of_affairs"
+      },
+      "Limitation": {
+        "description": "Constraints or boundaries on the capability",
+        "semantic_type": "State_of_affairs"
+      }
+    }
+  },
+  "properties": {
+    "identifier": {
+      "type": "string",
+      "description": "Unique identifier for the capability"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the capability"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "manipulation", "locomotion", "sensing", "perception", "navigation", 
+        "communication", "planning", "learning", "collaboration", "grasping",
+        "object_recognition", "path_planning", "obstacle_avoidance", "human_interaction"
+      ],
+      "description": "Category of the capability based on robot functional taxonomy"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of what the capability enables"
+    },
+    "enabled_by_components": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "Components that enable this capability"
+    },
+    "supported_actions": {
+      "type": "array", 
+      "items": {
+        "type": "string"
+      },
+      "description": "Actions that this capability supports"
+    },
+    "performance_metrics": {
+      "type": "object",
+      "properties": {
+        "accuracy": {
+          "type": "number",
+          "description": "Accuracy metric for the capability"
+        },
+        "precision": {
+          "type": "number", 
+          "description": "Precision metric for the capability"
+        },
+        "speed": {
+          "type": "number",
+          "description": "Speed/velocity metric for the capability"
+        },
+        "reliability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Reliability score (0-1) for the capability"
+        },
+        "success_rate": {
+          "type": "number",
+          "minimum": 0, 
+          "maximum": 1,
+          "description": "Success rate (0-1) for capability execution"
+        }
+      }
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Other capabilities or conditions required for this capability"
+    },
+    "environmental_constraints": {
+      "type": "object",
+      "properties": {
+        "lighting_conditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["bright", "dim", "dark", "variable"]
+          }
+        },
+        "surface_types": {
+          "type": "array", 
+          "items": {
+            "type": "string"
+          }
+        },
+        "obstacle_density": {
+          "type": "string",
+          "enum": ["none", "sparse", "dense", "cluttered"]
+        }
+      },
+      "description": "Environmental conditions under which capability can be exercised"
+    },
+    "safety_considerations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Safety aspects and precautions related to capability execution"
+    }
+  },
+  "relationships": {
+    "exhibited_by": {
+      "target": "Robot",
+      "cardinality": "many_to_one",
+      "description": "Capability is exhibited by a robot"
+    },
+    "enabled_by": {
+      "target": "Component", 
+      "cardinality": "many_to_many",
+      "description": "Capability is enabled by one or more components"
+    },
+    "supports": {
+      "target": "Action",
+      "cardinality": "one_to_many",
+      "description": "Capability supports execution of actions"
+    },
+    "depends_on": {
+      "target": "Capability",
+      "cardinality": "many_to_many",
+      "description": "Dependencies on other capabilities"
+    },
+    "enhances": {
+      "target": "Capability", 
+      "cardinality": "many_to_many",
+      "description": "Synergistic enhancement of other capabilities"
+    }
+  },
+  "constraints": {
+    "component_availability": "All enabling components must be functional and available",
+    "prerequisite_satisfaction": "All prerequisite capabilities must be available",
+    "environmental_compatibility": "Environmental conditions must meet capability requirements",
+    "safety_compliance": "Capability execution must adhere to safety considerations"
+  }
+}

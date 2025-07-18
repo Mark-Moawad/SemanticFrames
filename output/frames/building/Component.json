@@ -1,0 +1,300 @@
+{
+  "frame": "Component",
+  "description": "Individual physical element or part within a building system, based on IFC Element hierarchy and building construction practices",
+  "lexical_units": [
+    "actuator",
+    "beam",
+    "belfry",
+    "ceiling",
+    "column",
+    "component",
+    "connector",
+    "door",
+    "duct",
+    "element",
+    "fitting",
+    "fixture",
+    "floor",
+    "foundation",
+    "joint",
+    "member",
+    "outlet",
+    "panel",
+    "part",
+    "pipe",
+    "roof",
+    "sensor",
+    "slab",
+    "stairs",
+    "tower",
+    "unit",
+    "valve",
+    "wall",
+    "window"
+  ],
+  "frame_elements": {
+    "core": {
+      "Component": {
+        "description": "The individual building element or part",
+        "semantic_type": "Physical_entity"
+      },
+      "System": {
+        "description": "The building system that contains this component",
+        "semantic_type": "Physical_entity"
+      },
+      "Function": {
+        "description": "The specific role or purpose this component serves",
+        "semantic_type": "State_of_affairs"
+      }
+    },
+    "peripheral": {
+      "Material": {
+        "description": "The substance or materials the component is made from",
+        "semantic_type": "Attribute"
+      },
+      "Dimensions": {
+        "description": "Physical size, measurements, or geometric properties",
+        "semantic_type": "Attribute"
+      },
+      "Manufacturer": {
+        "description": "The company that produced the component",
+        "semantic_type": "Sentient"
+      },
+      "Installer": {
+        "description": "The party that installed or assembled the component",
+        "semantic_type": "Sentient"
+      },
+      "Location": {
+        "description": "Where the component is positioned within the building",
+        "semantic_type": "Location"
+      },
+      "Performance": {
+        "description": "Operational characteristics, efficiency, or capacity",
+        "semantic_type": "Attribute"
+      },
+      "Condition": {
+        "description": "Current state of repair, wear, or functionality",
+        "semantic_type": "Attribute"
+      },
+      "Installation_date": {
+        "description": "When the component was installed or replaced",
+        "semantic_type": "Time"
+      }
+    }
+  },
+  "frame_relations": {
+    "inherits_from": [
+      "Building_System"
+    ],
+    "is_inherited_by": [],
+    "precedes": [],
+    "is_preceded_by": [],
+    "is_causative_of": [],
+    "is_inchoative_of": [],
+    "uses": [],
+    "subframe_of": [
+      "Building_System"
+    ],
+    "has_subframes": []
+  },
+  "ifc_element_types": {
+    "Structural_Elements": {
+      "IfcWall": "Vertical building element for enclosure or structural support",
+      "IfcBeam": "Horizontal structural member carrying loads",
+      "IfcColumn": "Vertical structural member supporting beams and slabs",
+      "IfcSlab": "Horizontal structural element like floors or ceilings"
+    },
+    "Opening_Elements": {
+      "IfcDoor": "Building element providing access between spaces",
+      "IfcWindow": "Building element providing light and ventilation"
+    },
+    "Building_Services": {
+      "IfcPipe": "Element for fluid distribution",
+      "IfcDuct": "Element for air distribution",
+      "IfcOutlet": "Terminal element for electrical connections",
+      "IfcSensor": "Device for monitoring building conditions",
+      "IfcActuator": "Device for controlling building systems"
+    },
+    "Covering_Elements": {
+      "IfcRoof": "Upper covering of a building",
+      "IfcCovering": "Finish covering for floors, walls, or ceilings"
+    }
+  },
+  "iso_standards_alignment": {
+    "ISO_16739_1": {
+      "description": "IFC Data Schema - Element hierarchy",
+      "mapped_elements": {
+        "Component": "IFC Element entities (IfcWall, IfcDoor, etc.)",
+        "Material": "IfcMaterial and IfcMaterialLayerSet",
+        "Function": "Element usage and purpose",
+        "Performance": "Property sets and quantities"
+      }
+    }
+  },
+  "lexicon_integration": {
+    "source": "building_lexicon.json",
+    "key_terms": [
+      "asset"
+    ],
+    "augmentation_date": "2025-07-17",
+    "framenet_integration": true
+  },
+  "framenet_connections": {
+    "primary_frame": "Building_subparts",
+    "related_frames": [
+      "Ingredients",
+      "Part_whole",
+      "Artifact"
+    ],
+    "framenet_examples": [
+      {
+        "frame": "Building_subparts",
+        "target": "belfry",
+        "sentence": "More often than not , ringers think of the church as something stuck on the bottom of the belfry .",
+        "frame_elements": [
+          {
+            "fe_name": "Building_part",
+            "text": "belfry"
+          }
+        ]
+      },
+      {
+        "frame": "Building_subparts",
+        "target": "belfry",
+        "sentence": "`` Another women wrote from Sheffield to say that in her 60 years of ringing , `` I have never known a lady to faint in the belfry .",
+        "frame_elements": [
+          {
+            "fe_name": "Building_part",
+            "text": "belfry"
+          }
+        ]
+      },
+      {
+        "frame": "Building_subparts",
+        "target": "belfry",
+        "sentence": "Far above in the belfry , the huge bronze bells , mounted on wheels , swing madly through a full 360 degrees , starting and ending , surprisingly , in the inverted , or mouth-up position .",
+        "frame_elements": [
+          {
+            "fe_name": "Building_part",
+            "text": "belfry"
+          }
+        ]
+      },
+      {
+        "frame": "Building_subparts",
+        "target": "tower",
+        "sentence": "ASLACTON , England -- Of all scenes that evoke rural England , this is one of the loveliest : An ancient stone church stands amid the fields , the sound of bells cascading from its tower , calling the faithful to evensong .",
+        "frame_elements": [
+          {
+            "fe_name": "Building_part",
+            "text": "tower"
+          },
+          {
+            "fe_name": "Whole",
+            "text": "its"
+          }
+        ]
+      },
+      {
+        "frame": "Building_subparts",
+        "target": "tower",
+        "sentence": "In the tower , five men and women pull rhythmically on ropes attached to the same five bells that first sounded here in 1614 .",
+        "frame_elements": [
+          {
+            "fe_name": "Building_part",
+            "text": "tower"
+          }
+        ]
+      },
+      {
+        "frame": "Building_subparts",
+        "target": "tower",
+        "sentence": "`` To ring for even one service at this tower , we have to scrape , '' says Mr. Hammond , a retired water-authority worker .",
+        "frame_elements": [
+          {
+            "fe_name": "Building_part",
+            "text": "tower"
+          }
+        ]
+      },
+      {
+        "frame": "Building_subparts",
+        "target": "tower",
+        "sentence": "It is a passion that usually stays in the tower , however .",
+        "frame_elements": [
+          {
+            "fe_name": "Building_part",
+            "text": "tower"
+          }
+        ]
+      },
+      {
+        "frame": "Building_subparts",
+        "target": "tower",
+        "sentence": "`` They were a self-perpetuating club that treated the tower as sort of a separate premises , '' the Vicar Hummerstone says .",
+        "frame_elements": [
+          {
+            "fe_name": "Building_part",
+            "text": "tower"
+          }
+        ]
+      },
+      {
+        "frame": "Building_subparts",
+        "target": "tower",
+        "sentence": "`` But C.J.B. Marshall , vicar of a nearby church , feels the fault is in the stairs from the bell tower that are located next to the altar .",
+        "frame_elements": [
+          {
+            "fe_name": "Building_part",
+            "text": "tower"
+          },
+          {
+            "fe_name": "Type",
+            "text": "bell"
+          }
+        ]
+      }
+    ]
+  },
+  "example_sentences": [
+    "The [Component concrete wall] in the [System structural system] provides [Function load-bearing support] for the upper floors.",
+    "This [Component HVAC sensor] monitors [Performance temperature and humidity] in the [Location conference room].",
+    "The [Component aluminum window] was installed by [Installer ABC Construction] using [Material double-glazed glass].",
+    "Each [Component steel beam] has [Dimensions 6 meters length] and was [Installation_date installed in March 2024].",
+    "The [Component reinforced concrete wall] provides [Function structural support] in the [System structural system].",
+    "Each [Component sensor] monitors [Performance temperature and humidity] in the [Location conference rooms].",
+    "The [Component steel beam] spans [Dimensions 6 meters] and supports [Function floor loads]."
+  ],
+  "metadata": {
+    "frame_version": "1.0",
+    "created_date": "2025-07-17",
+    "parent_frame": "Building_System",
+    "iso_standards": [
+      "ISO 16739-1:2018"
+    ],
+    "description": "Building component frame for individual physical elements following IFC standards"
+  },
+  "framenet_statistics": {
+    "total_examples_found": 15,
+    "building_relevant_examples": 9,
+    "new_lexical_units_added": 0,
+    "target_framenet_frames": [
+      "Building_subparts",
+      "Ingredients",
+      "Part_whole"
+    ]
+  },
+  "training_examples": {
+    "source": "output/training_examples/Building_Component_training_examples.json",
+    "total_examples": 8,
+    "purpose": "Semantic annotation training for building components",
+    "features": [
+      "Frame element annotation with semantic types",
+      "Professional building terminology",
+      "IFC element alignment",
+      "Technical specifications and measurements",
+      "Real-world building scenarios"
+    ],
+    "created_date": "2025-07-17"
+  }
+}

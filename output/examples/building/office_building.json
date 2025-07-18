@@ -1,0 +1,376 @@
+{
+  "semantic_frame_instance": "Office Building Example - IFC Enhanced",
+  "frame_type": "Building_IFC_Enhanced",
+  "description": "IFC-compliant example of a 3-story office building following ISO 16739-1 standards",
+  "version": "2.0",
+  "creation_date": "2025-01-11",
+  "ifc_compliance": "ISO 16739-1:2018",
+  
+  "ifc_spatial_hierarchy": {
+    "IfcProject": {
+      "name": "Corporate Office Development",
+      "description": "Modern office building development project",
+      "semantic_frame": "Project",
+      "frame_elements": {
+        "Objective": "Create modern workspace for 150 employees",
+        "Participants": ["Developer", "Architect", "Contractor"],
+        "Duration": "18 months",
+        "Resources": "€2.5M budget"
+      }
+    },
+    "IfcSite": {
+      "name": "Berlin Commercial District Site",
+      "address": "Potsdamer Platz 1, 10785 Berlin, Germany",
+      "semantic_frame": "Location_by_terrain", 
+      "frame_elements": {
+        "Ground": "Urban commercial lot",
+        "Boundaries": "1,500 m² plot",
+        "Access": "Public transit accessible"
+      },
+      "site_properties": {
+        "LandTitleNumber": "BER-2024-001",
+        "SiteAddress": "Potsdamer Platz 1, 10785 Berlin, Germany",
+        "TotalSiteArea": 1500
+      }
+    },
+    "IfcBuilding": {
+      "name": "Corporate Headquarters Building",
+      "semantic_frame": "Building_IFC_Enhanced",
+      "frame_elements": {
+        "Asset": {
+          "value": "Corporate Headquarters Building",
+          "ifc_properties": {
+            "BuildingID": "BLD-HQ-001",
+            "YearOfConstruction": 2024,
+            "GrossFloorArea": 1200,
+            "NetFloorArea": 1080,
+            "BuildingUse": "OFFICE",
+            "IsLandmarked": false
+          }
+        },
+        "Function": {
+          "value": "Commercial office workspace",
+          "ifc_properties": {
+            "CompositionType": "COMPLEX",
+            "OccupancyType": "OFFICE"
+          }
+        },
+        "Location": {
+          "value": "Berlin Commercial District",
+          "ifc_relationship": "IfcRelAggregates to IfcSite"
+        },
+        "Owner": {
+          "value": "TechCorp International",
+          "ifc_mapping": {
+            "entity": "IfcActor",
+            "role": "OWNER"
+          }
+        },
+        "Manager": {
+          "value": "Berlin Facilities Management GmbH",
+          "ifc_mapping": {
+            "entity": "IfcActor", 
+            "role": "FACILITIESMANAGER"
+          }
+        }
+      },
+      "building_storeys": [
+        {
+          "IfcBuildingStorey": {
+            "name": "Ground Floor",
+            "elevation": 0.0,
+            "semantic_frame": "Building_subparts",
+            "frame_elements": {
+              "Level": "Ground level entry floor",
+              "Elevation": "0.0m above datum",
+              "Spaces": ["Lobby", "Reception", "Meeting Rooms"],
+              "Access": "Main building entrance"
+            },
+            "spaces": [
+              {
+                "IfcSpace": {
+                  "name": "Main Lobby",
+                  "semantic_frame": "Locale_by_use",
+                  "frame_elements": {
+                    "Use": "Reception and circulation",
+                    "Area": "120 m²",
+                    "Volume": "360 m³",
+                    "Boundaries": "Glass curtain wall, reception desk"
+                  },
+                  "space_properties": {
+                    "NetFloorArea": 120,
+                    "FinishCeilingHeight": 3.0,
+                    "OccupancyType": "LOBBY"
+                  }
+                }
+              },
+              {
+                "IfcSpace": {
+                  "name": "Meeting Room A",
+                  "semantic_frame": "Locale_by_use",
+                  "frame_elements": {
+                    "Use": "Team meetings and presentations",
+                    "Area": "25 m²",
+                    "Volume": "75 m³",
+                    "Occupancy": "8 persons maximum"
+                  },
+                  "space_properties": {
+                    "NetFloorArea": 25,
+                    "FinishCeilingHeight": 3.0,
+                    "OccupancyType": "MEETINGROOM"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "IfcBuildingStorey": {
+            "name": "First Floor",
+            "elevation": 3.5,
+            "semantic_frame": "Building_subparts",
+            "frame_elements": {
+              "Level": "Primary office workspace floor",
+              "Elevation": "3.5m above datum",
+              "Spaces": ["Open Office", "Private Offices", "Break Room"]
+            },
+            "spaces": [
+              {
+                "IfcSpace": {
+                  "name": "Open Office Area",
+                  "semantic_frame": "Locale_by_use",
+                  "frame_elements": {
+                    "Use": "Collaborative workspace",
+                    "Area": "300 m²",
+                    "Volume": "900 m³",
+                    "Occupancy": "60 workstations"
+                  },
+                  "space_properties": {
+                    "NetFloorArea": 300,
+                    "FinishCeilingHeight": 3.0,
+                    "OccupancyType": "OFFICE"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "IfcBuildingStorey": {
+            "name": "Second Floor",
+            "elevation": 7.0,
+            "semantic_frame": "Building_subparts",
+            "frame_elements": {
+              "Level": "Executive and administrative floor",
+              "Elevation": "7.0m above datum", 
+              "Spaces": ["Executive Offices", "Board Room", "Administrative Offices"]
+            }
+          }
+        }
+      ]
+    }
+  },
+  
+  "building_systems": {
+    "IfcStructuralSystem": {
+      "name": "Primary Structural System",
+      "semantic_frame": "Building_System",
+      "frame_elements": {
+        "System_Type": "Reinforced concrete frame structure",
+        "Components": ["Load-bearing walls", "Floor slabs", "Columns", "Beams"],
+        "Function": "Structural support and load distribution",
+        "Performance": "Designed for 50-year service life"
+      },
+      "components": [
+        {
+          "IfcWall": {
+            "name": "Exterior Wall North",
+            "semantic_frame": "Building_Component",
+            "frame_elements": {
+              "Component_Type": "Load-bearing exterior wall",
+              "Material": "Reinforced concrete with insulation",
+              "Function": "Structural support and thermal barrier",
+              "Location": "North facade, Grid A-D"
+            },
+            "ifc_properties": {
+              "FireRating": "F90",
+              "ThermalTransmittance": 0.35,
+              "LoadBearing": true,
+              "IsExternal": true
+            }
+          }
+        },
+        {
+          "IfcSlab": {
+            "name": "First Floor Slab",
+            "semantic_frame": "Building_Component",
+            "frame_elements": {
+              "Component_Type": "Reinforced concrete floor slab",
+              "Material": "C30/37 concrete with steel reinforcement",
+              "Function": "Floor structure and load distribution",
+              "Location": "Level 1, spanning Grid A-D, 1-4"
+            },
+            "ifc_properties": {
+              "Thickness": 0.25,
+              "LoadBearing": true,
+              "SpanDirection": "BIDIRECTIONAL"
+            }
+          }
+        },
+        {
+          "IfcColumn": {
+            "name": "Column C2",
+            "semantic_frame": "Building_Component", 
+            "frame_elements": {
+              "Component_Type": "Reinforced concrete column",
+              "Material": "C30/37 concrete, steel reinforcement",
+              "Function": "Vertical load transfer to foundation",
+              "Location": "Grid intersection C-2"
+            },
+            "ifc_properties": {
+              "CrossSection": "400x400mm",
+              "LoadBearing": true,
+              "BucklingLength": 3.5
+            }
+          }
+        }
+      ]
+    },
+    "IfcBuildingSystem_HVAC": {
+      "name": "Climate Control System",
+      "system_type": "HVAC",
+      "semantic_frame": "Building_System",
+      "frame_elements": {
+        "System_Type": "Variable Air Volume (VAV) system",
+        "Components": ["Air handling units", "VAV boxes", "Ductwork", "Sensors"],
+        "Function": "Indoor climate control and air quality",
+        "Performance": "Energy efficiency rating A+"
+      },
+      "components": [
+        {
+          "IfcAirTerminal": {
+            "name": "VAV Box - Office Area 1",
+            "semantic_frame": "Building_Component",
+            "frame_elements": {
+              "Component_Type": "Variable air volume terminal",
+              "Function": "Localized air flow control",
+              "Location": "First floor open office area"
+            }
+          }
+        },
+        {
+          "IfcDuctSegment": {
+            "name": "Main Supply Duct - Level 1",
+            "semantic_frame": "Building_Component",
+            "frame_elements": {
+              "Component_Type": "Galvanized steel ductwork",
+              "Function": "Conditioned air distribution",
+              "Location": "First floor ceiling plenum"
+            }
+          }
+        }
+      ]
+    },
+    "IfcBuildingSystem_Electrical": {
+      "name": "Electrical Power System",
+      "system_type": "ELECTRICAL",
+      "semantic_frame": "Building_System",
+      "frame_elements": {
+        "System_Type": "Three-phase electrical distribution",
+        "Components": ["Main panel", "Sub-panels", "Outlets", "Lighting"],
+        "Function": "Electrical power distribution",
+        "Performance": "Smart metering and energy monitoring"
+      },
+      "components": [
+        {
+          "IfcOutlet": {
+            "name": "Power Outlet - Workstation 1A",
+            "semantic_frame": "Building_Component",
+            "frame_elements": {
+              "Component_Type": "Duplex electrical outlet",
+              "Function": "Power supply for workstation equipment",
+              "Location": "First floor, workstation cluster A"
+            }
+          }
+        },
+        {
+          "IfcLightFixture": {
+            "name": "LED Panel - Office Area 1",
+            "semantic_frame": "Building_Component",
+            "frame_elements": {
+              "Component_Type": "LED lighting panel with daylight dimming",
+              "Function": "Task and ambient lighting",
+              "Location": "First floor open office ceiling"
+            }
+          }
+        }
+      ]
+    }
+  },
+  
+  "opening_elements": [
+    {
+      "IfcDoor": {
+        "name": "Main Entrance Door",
+        "semantic_frame": "Building_Component",
+        "frame_elements": {
+          "Component_Type": "Automatic sliding glass doors",
+          "Material": "Tempered glass with aluminum frame",
+          "Function": "Primary building access with security control",
+          "Location": "Ground floor main entrance"
+        },
+        "ifc_properties": {
+          "FireRating": "EW30",
+          "SecurityRating": "RC2",
+          "OperationType": "AUTOMATIC_SLIDING"
+        }
+      }
+    },
+    {
+      "IfcWindow": {
+        "name": "Curtain Wall Window - North Facade",
+        "semantic_frame": "Building_Component",
+        "frame_elements": {
+          "Component_Type": "Triple-glazed curtain wall window",
+          "Material": "Low-E coated glass with thermal break frame",
+          "Function": "Natural lighting and thermal control",
+          "Location": "North facade, all floors"
+        },
+        "ifc_properties": {
+          "ThermalTransmittance": 1.2,
+          "GlazingType": "TRIPLE",
+          "OperationType": "FIXED"
+        }
+      }
+    }
+  ],
+  
+  "professional_integration": {
+    "building_codes_compliance": {
+      "local_codes": "Berlin Building Code (BauO Bln)",
+      "fire_safety": "DIN EN 13501 classifications applied",
+      "accessibility": "DIN 18040 barrier-free design",
+      "energy_efficiency": "EnEV 2016 compliance"
+    },
+    "project_stakeholders": {
+      "owner": "TechCorp International",
+      "architect": "Berlin Design Studio GmbH", 
+      "structural_engineer": "Structural Dynamics AG",
+      "mep_engineer": "BuildTech Systems GmbH",
+      "facility_manager": "Berlin Facilities Management GmbH"
+    },
+    "bim_workflow": {
+      "authoring_tool": "IFC-compatible BIM software",
+      "model_uses": ["Design coordination", "Quantity takeoff", "Facility management"],
+      "lod_requirements": "LOD 300 for design, LOD 500 for FM handover"
+    }
+  },
+  
+  "integration_metadata": {
+    "semantic_frame_preservation": "All frame elements maintained",
+    "ifc_hierarchy_compliance": "Full ISO 16739-1 conformance",
+    "professional_terminology": "Building industry vocabulary integrated",
+    "lexical_units_enhanced": "IFC context added to all terms",
+    "extensibility": "Ready for additional building systems and components"
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "example_name": "Industrial Mobile Robot Instance",
+  "based_on_blueprint": "robot_blueprint.json",
+  "description": "Concrete example of an industrial mobile robot using the Robot semantic frame blueprint",
+  "robot_instance": {
+    "frame": "Robot",
+    "instance_id": "Industrial_Mobile_Robot_001",
+    "frame_elements": {
+      "agent": {
+        "robot_name": "AMR-Assembly-Line-01",
+        "robot_type": "Industrial Mobile Robot",
+        "manufacturer": "RoboCorp Industries",
+        "model": "AMR-6DOF-Vision",
+        "serial_number": "AMR-001-2025"
+      },
+      "components": [
+        {
+          "frame": "Component",
+          "component_id": "manipulator_001",
+          "frame_elements": {
+            "component_name": "6-DOF Robotic Arm",
+            "component_type": "Manipulator",
+            "component_function": "Object manipulation and positioning",
+            "specifications": {
+              "type": "robotic_arm",
+              "degrees_of_freedom": 6,
+              "reach": "850mm",
+              "payload": "5kg",
+              "mounting": "base_mounted",
+              "repeatability": "±0.1mm",
+              "joint_types": ["revolute", "revolute", "revolute", "revolute", "revolute", "revolute"]
+            },
+            "parent_system": "Industrial_Mobile_Robot_001"
+          }
+        },
+        {
+          "frame": "Component",
+          "component_id": "vision_system_001",
+          "frame_elements": {
+            "component_name": "RGB-D Vision System",
+            "component_type": "Sensor",
+            "component_function": "Object detection and depth perception",
+            "specifications": {
+              "type": "RGB-D_camera",
+              "resolution": "1920x1080",
+              "depth_range": "0.3-8.0m",
+              "field_of_view": "70°",
+              "frame_rate": "30fps",
+              "interface": "USB 3.0"
+            },
+            "parent_system": "Industrial_Mobile_Robot_001"
+          }
+        },
+        {
+          "frame": "Component",
+          "component_id": "mobility_platform_001",
+          "frame_elements": {
+            "component_name": "Omnidirectional Mobile Platform",
+            "component_type": "Mobile_Platform",
+            "component_function": "Autonomous navigation and positioning",
+            "specifications": {
+              "type": "omnidirectional_wheeled",
+              "max_speed": "1.5m/s",
+              "payload": "100kg",
+              "navigation": "autonomous",
+              "wheel_configuration": "mecanum_wheels",
+              "localization": "LIDAR_SLAM"
+            },
+            "parent_system": "Industrial_Mobile_Robot_001"
+          }
+        },
+        {
+          "frame": "Component",
+          "component_id": "gripper_001",
+          "frame_elements": {
+            "component_name": "Parallel Jaw Gripper",
+            "component_type": "End_Effector",
+            "component_function": "Object grasping and holding",
+            "specifications": {
+              "type": "parallel_jaw_gripper",
+              "max_opening": "150mm",
+              "grip_force": "200N",
+              "weight": "1.2kg"
+            },
+            "parent_system": "Industrial_Mobile_Robot_001"
+          }
+        }
+      ],
+      "capabilities": [
+        {
+          "frame": "Capability",
+          "capability_id": "manipulation_capability",
+          "frame_elements": {
+            "capability_name": "Object Manipulation",
+            "capability_type": "Manipulation",
+            "capability_description": "Ability to grasp, move, and position objects with precision",
+            "enabling_components": ["manipulator_001", "vision_system_001", "gripper_001"],
+            "enabled_actions": ["pick_action", "place_action", "grasp_action", "release_action"],
+            "parent_system": "Industrial_Mobile_Robot_001"
+          }
+        },
+        {
+          "frame": "Capability",
+          "capability_id": "navigation_capability",
+          "frame_elements": {
+            "capability_name": "Autonomous Navigation",
+            "capability_type": "Navigation",
+            "capability_description": "Ability to move through industrial environment autonomously",
+            "enabling_components": ["mobility_platform_001", "vision_system_001"],
+            "enabled_actions": ["navigate_action", "move_action", "rotate_action"],
+            "parent_system": "Industrial_Mobile_Robot_001"
+          }
+        },
+        {
+          "frame": "Capability",
+          "capability_id": "perception_capability",
+          "frame_elements": {
+            "capability_name": "Visual Perception",
+            "capability_type": "Perception",
+            "capability_description": "Ability to perceive and interpret visual information in 3D space",
+            "enabling_components": ["vision_system_001"],
+            "enabled_actions": ["detect_action", "inspect_action", "monitor_action"],
+            "parent_system": "Industrial_Mobile_Robot_001"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "frame": "Action",
+          "action_id": "pick_action",
+          "frame_elements": {
+            "action_name": "Pick Object",
+            "action_type": "Pick",
+            "action_description": "Grasp and lift an object from a surface using vision guidance",
+            "required_capability": "manipulation_capability",
+            "required_components": ["manipulator_001", "vision_system_001", "gripper_001"],
+            "preconditions": ["object_detected", "manipulator_ready", "gripper_open", "path_clear"],
+            "postconditions": ["object_grasped", "object_lifted", "gripper_closed"],
+            "parameters": {
+              "target_object": "ObjectID",
+              "approach_angle": "Angle",
+              "grip_force": "Force"
+            }
+          }
+        },
+        {
+          "frame": "Action",
+          "action_id": "place_action",
+          "frame_elements": {
+            "action_name": "Place Object",
+            "action_type": "Place",
+            "action_description": "Position and release an object at a specified target location",
+            "required_capability": "manipulation_capability",
+            "required_components": ["manipulator_001", "vision_system_001", "gripper_001"],
+            "preconditions": ["object_grasped", "target_location_identified", "target_area_clear"],
+            "postconditions": ["object_placed", "manipulator_free", "gripper_open"],
+            "parameters": {
+              "target_location": "Coordinates",
+              "placement_orientation": "Orientation",
+              "release_height": "Distance"
+            }
+          }
+        },
+        {
+          "frame": "Action",
+          "action_id": "navigate_action",
+          "frame_elements": {
+            "action_name": "Navigate to Location",
+            "action_type": "Navigate",
+            "action_description": "Move autonomously to a specified location while avoiding obstacles",
+            "required_capability": "navigation_capability",
+            "required_components": ["mobility_platform_001", "vision_system_001"],
+            "preconditions": ["path_planned", "obstacles_detected", "localization_active"],
+            "postconditions": ["target_reached", "position_updated", "ready_for_next_task"],
+            "parameters": {
+              "target_coordinates": "Coordinates",
+              "max_speed": "Velocity",
+              "obstacle_avoidance": "Boolean"
+            }
+          }
+        },
+        {
+          "frame": "Action",
+          "action_id": "detect_action",
+          "frame_elements": {
+            "action_name": "Detect Object",
+            "action_type": "Detect",
+            "action_description": "Identify and locate objects in the robot's field of view",
+            "required_capability": "perception_capability",
+            "required_components": ["vision_system_001"],
+            "preconditions": ["camera_active", "lighting_adequate", "field_of_view_clear"],
+            "postconditions": ["object_identified", "object_located", "confidence_score_available"],
+            "parameters": {
+              "detection_region": "BoundingBox",
+              "confidence_threshold": "Float",
+              "object_classes": "List"
+            }
+          }
+        }
+      ],
+      "environment": {
+        "environment_type": "Industrial Factory Floor",
+        "workspace_dimensions": "20m x 15m x 3m",
+        "safety_zones": ["assembly_area", "human_workspace", "storage_area"],
+        "operational_constraints": {
+          "max_noise_level": "85dB",
+          "temperature_range": "10-40°C",
+          "lighting_conditions": "industrial_standard"
+        }
+      }
+    }
+  },
+  "use_case": {
+    "scenario": "Automated Assembly Line Support",
+    "description": "Robot assists human workers by fetching components, positioning assemblies, and performing quality inspections",
+    "typical_workflow": [
+      "Navigate to component storage area",
+      "Detect and identify required components", 
+      "Pick up components using vision-guided manipulation",
+      "Navigate to assembly station",
+      "Place components at precise locations",
+      "Return to standby position"
+    ]
+  },
+  "metadata": {
+    "example_version": "1.0",
+    "created_date": "2025-07-17",
+    "description": "Concrete instantiation of the Robot semantic frame blueprint for an industrial mobile robot"
+  }
+}

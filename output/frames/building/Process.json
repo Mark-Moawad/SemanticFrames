@@ -1,0 +1,234 @@
+{
+  "frame": "Process",
+  "description": "Operational processes, procedures, and functions performed within or by building systems, designed to parallel Robot Action frames for construction robotics integration",
+  "version": "1.0",
+  "creation_date": "2025-01-11",
+  "construction_robotics_alignment": true,
+  "robot_action_mapping": "This frame maps to Robot.Action for construction robotics semantic understanding",
+  
+  "lexical_units": [
+    "operation", "process", "procedure", "function", "maintenance", "inspection", 
+    "monitoring", "control", "regulation", "heating", "cooling", "ventilation",
+    "lighting", "security", "access control", "fire protection", "cleaning",
+    "repair", "installation", "commissioning", "testing", "calibration",
+    "scheduling", "occupancy", "evacuation", "energy management", "automation"
+  ],
+  
+  "frame_elements": {
+    "core": {
+      "Process_Type": {
+        "description": "The specific type of building process or operation being performed",
+        "semantic_type": "State_of_affairs",
+        "required": true,
+        "robot_mapping": "Maps to Robot.Action.Action_Type for semantic alignment",
+        "examples": [
+          "HVAC temperature regulation",
+          "Security access monitoring", 
+          "Fire safety inspection",
+          "Energy consumption optimization",
+          "Structural health monitoring"
+        ]
+      },
+      "System": {
+        "description": "The building system that performs or is subject to the process",
+        "semantic_type": "Physical_entity",
+        "required": true,
+        "robot_mapping": "Target system for robot inspection/maintenance actions",
+        "ifc_mapping": {
+          "entity": "IfcBuildingSystem",
+          "relationship": "IfcRelAssignsToProcess"
+        }
+      },
+      "Function": {
+        "description": "The operational purpose or goal of the process",
+        "semantic_type": "State_of_affairs", 
+        "required": true,
+        "robot_mapping": "Corresponds to Robot.Action.Purpose",
+        "examples": [
+          "Maintain optimal temperature",
+          "Ensure building security",
+          "Prevent fire hazards",
+          "Optimize energy efficiency",
+          "Monitor structural integrity"
+        ]
+      },
+      "Location": {
+        "description": "The spatial context where the process occurs",
+        "semantic_type": "Location",
+        "required": true,
+        "robot_mapping": "Navigation target for inspection robots",
+        "ifc_mapping": {
+          "entity": "IfcSpace",
+          "relationship": "IfcRelContainedInSpatialStructure"
+        }
+      }
+    },
+    "peripheral": {
+      "Parameters": {
+        "description": "Operational parameters and settings for the process",
+        "semantic_type": "Quantity",
+        "required": false,
+        "robot_mapping": "Maps to Robot.Action.Specifications for precision",
+        "examples": [
+          "Temperature setpoint: 22°C",
+          "Air flow rate: 2000 m³/h",
+          "Security zone: Level 3 access",
+          "Inspection frequency: Weekly"
+        ]
+      },
+      "Duration": {
+        "description": "The time period or schedule for the process",
+        "semantic_type": "Time",
+        "required": false,
+        "robot_mapping": "Corresponds to Robot.Action.Duration",
+        "examples": [
+          "Continuous operation",
+          "Daily from 08:00-18:00",
+          "Monthly inspection cycle",
+          "Emergency response: <5 minutes"
+        ]
+      },
+      "Condition": {
+        "description": "Prerequisites or conditions that trigger the process",
+        "semantic_type": "State",
+        "required": false,
+        "robot_mapping": "Trigger conditions for robot intervention",
+        "examples": [
+          "Occupancy detected",
+          "Temperature threshold exceeded",
+          "Security breach detected",
+          "Maintenance schedule due"
+        ]
+      },
+      "Status": {
+        "description": "Current operational state of the process",
+        "semantic_type": "State",
+        "required": false,
+        "robot_mapping": "Current state for robot assessment",
+        "examples": [
+          "Active", "Standby", "Fault", "Maintenance", 
+          "Scheduled", "Completed", "Failed"
+        ]
+      },
+      "Monitoring": {
+        "description": "Sensors and systems used to monitor the process",
+        "semantic_type": "Physical_entity",
+        "required": false,
+        "robot_mapping": "Sensor data for robot coordination",
+        "ifc_mapping": {
+          "entity": "IfcSensor",
+          "relationship": "IfcRelConnectsElements"
+        }
+      },
+      "Control": {
+        "description": "Control mechanisms and automation for the process",
+        "semantic_type": "Physical_entity",
+        "required": false,
+        "robot_mapping": "Automation systems robots can interface with",
+        "ifc_mapping": {
+          "entity": "IfcController",
+          "relationship": "IfcRelConnectsElements"
+        }
+      }
+    }
+  },
+  
+  "construction_robotics_integration": {
+    "robot_action_mappings": {
+      "inspection_processes": {
+        "robot_actions": ["navigate", "scan", "measure", "document"],
+        "building_processes": ["structural_monitoring", "system_diagnostics", "safety_inspection"],
+        "semantic_alignment": "Robot inspection actions map to building monitoring processes"
+      },
+      "maintenance_processes": {
+        "robot_actions": ["manipulate", "repair", "replace", "clean"],
+        "building_processes": ["component_maintenance", "system_repair", "cleaning_operations"],
+        "semantic_alignment": "Robot maintenance actions map to building upkeep processes"
+      },
+      "monitoring_processes": {
+        "robot_actions": ["sense", "measure", "analyze", "report"],
+        "building_processes": ["performance_monitoring", "condition_assessment", "data_collection"],
+        "semantic_alignment": "Robot sensing actions map to building monitoring processes"
+      }
+    },
+    "multi_robot_coordination": {
+      "process_distribution": "Multiple robots can coordinate on different building processes",
+      "semantic_reasoning": "Shared semantic understanding enables intelligent task allocation",
+      "system_integration": "Robots understand building systems they interact with"
+    }
+  },
+  
+  "frame_relations": {
+    "inherits_from": ["Building_System"],
+    "is_inherited_by": [],
+    "precedes": [],
+    "is_preceded_by": [],
+    "is_causative_of": [],
+    "is_inchoative_of": [],
+    "uses": ["Building_Component", "Building_System"],
+    "subframe_of": ["Building"],
+    "has_subframes": [],
+    "robot_parallel_frame": "Action",
+    "semantic_mapping": "Process ↔ Action for construction robotics"
+  },
+  
+  "ifc_process_integration": {
+    "IfcProcess": {
+      "description": "IFC entity for representing building processes",
+      "mapping": "Building_Process frame maps to IfcProcess hierarchy"
+    },
+    "IfcTask": {
+      "description": "Specific tasks within building processes",
+      "robot_mapping": "Individual robot actions correspond to IfcTask entities"
+    },
+    "IfcProcedure": {
+      "description": "Standardized procedures for building operations",
+      "robot_mapping": "Robot behavior sequences follow building procedures"
+    }
+  },
+  
+  "process_categories": {
+    "operational_processes": {
+      "HVAC_Control": {
+        "description": "Heating, ventilation, and air conditioning operations",
+        "robot_applications": ["Duct inspection", "Filter replacement", "System monitoring"],
+        "semantic_elements": ["temperature_regulation", "air_quality_management", "energy_optimization"]
+      },
+      "Security_Operations": {
+        "description": "Access control and security monitoring",
+        "robot_applications": ["Perimeter patrol", "Access verification", "Threat detection"],
+        "semantic_elements": ["access_control", "surveillance", "intrusion_detection"]
+      },
+      "Fire_Safety": {
+        "description": "Fire detection and suppression processes",
+        "robot_applications": ["Smoke detection", "Sprinkler inspection", "Evacuation assistance"],
+        "semantic_elements": ["fire_detection", "suppression_activation", "emergency_response"]
+      }
+    },
+    "maintenance_processes": {
+      "Structural_Inspection": {
+        "description": "Monitoring structural health and integrity",
+        "robot_applications": ["Crack detection", "Vibration monitoring", "Load assessment"],
+        "semantic_elements": ["condition_assessment", "defect_identification", "structural_analysis"]
+      },
+      "System_Maintenance": {
+        "description": "Preventive and corrective maintenance of building systems",
+        "robot_applications": ["Component replacement", "Cleaning operations", "Performance testing"],
+        "semantic_elements": ["preventive_maintenance", "corrective_repair", "performance_optimization"]
+      },
+      "Environmental_Monitoring": {
+        "description": "Monitoring environmental conditions and compliance",
+        "robot_applications": ["Air quality sensing", "Noise monitoring", "Energy auditing"],
+        "semantic_elements": ["environmental_assessment", "compliance_monitoring", "sustainability_tracking"]
+      }
+    }
+  },
+  
+  "semantic_reasoning_capabilities": {
+    "process_understanding": "Robots understand what building processes they're supporting",
+    "system_interaction": "Robots know how their actions affect building systems",
+    "coordination_logic": "Multi-robot teams coordinate based on process dependencies",
+    "adaptive_behavior": "Robots adapt actions based on building process requirements",
+    "knowledge_integration": "Semantic frames enable robot learning from building operations"
+  }
+}

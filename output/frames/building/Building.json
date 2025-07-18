@@ -1,0 +1,328 @@
+{
+  "frame": "Building",
+  "name": "Building_IFC_Enhanced",
+  "description": "Enhanced building semantic frame with full IFC hierarchical compliance following ISO 16739-1 standards",
+  "version": "2.0",
+  "creation_date": "2025-01-11",
+  "based_on": "Building.json v1.0",
+  "ifc_compliance_level": "Full",
+  
+  "frame_definition": {
+    "frame_name": "Building",
+    "definition": "A permanent structure designed for human occupancy or use, compliant with IFC spatial hierarchy",
+    "semantic_type": "Physical_entity",
+    "ifc_entity": "IfcBuilding",
+    "ifc_hierarchy_level": "3",
+    "parent_entities": ["IfcProject", "IfcSite"],
+    "child_entities": ["IfcBuildingStorey", "IfcSpace"]
+  },
+  
+  "frame_elements": {
+    "core": {
+      "Asset": {
+        "definition": "The building considered as a physical and financial asset",
+        "semantic_type": "Physical_entity",
+        "ifc_mapping": {
+          "entity": "IfcBuilding",
+          "property_set": "Pset_BuildingCommon",
+          "properties": ["BuildingID", "YearOfConstruction", "GrossFloorArea"]
+        },
+        "required": true
+      },
+      "Function": {
+        "definition": "The intended use or purpose of the building",
+        "semantic_type": "State_of_affairs",
+        "ifc_mapping": {
+          "entity": "IfcBuilding.CompositionType",
+          "property_set": "Pset_BuildingCommon",
+          "properties": ["OccupancyType", "BuildingUse"]
+        },
+        "required": true
+      },
+      "Location": {
+        "definition": "The spatial context and geographical placement of the building",
+        "semantic_type": "Location",
+        "ifc_mapping": {
+          "entity": "IfcSite",
+          "relationship": "IfcRelAggregates",
+          "property_set": "Pset_SiteCommon",
+          "properties": ["BuildingAddress", "LandTitleNumber"]
+        },
+        "required": true
+      }
+    },
+    "peripheral": {
+      "Owner": {
+        "definition": "The entity that owns the building asset",
+        "semantic_type": "Sentient",
+        "ifc_mapping": {
+          "entity": "IfcActor",
+          "relationship": "IfcRelAssignsToActor",
+          "role": "OWNER"
+        },
+        "required": false
+      },
+      "Manager": {
+        "definition": "The entity responsible for building management and operations",
+        "semantic_type": "Sentient",
+        "ifc_mapping": {
+          "entity": "IfcActor",
+          "relationship": "IfcRelAssignsToActor",
+          "role": "FACILITIESMANAGER"
+        },
+        "required": false
+      },
+      "Purpose": {
+        "definition": "The specific intended use or business purpose",
+        "semantic_type": "State_of_affairs",
+        "ifc_mapping": {
+          "property_set": "Pset_BuildingCommon",
+          "properties": ["Description", "LongName"]
+        },
+        "required": false
+      },
+      "Condition": {
+        "definition": "The current physical and operational state",
+        "semantic_type": "State",
+        "ifc_mapping": {
+          "property_set": "Pset_BuildingElementCommon",
+          "properties": ["Status", "InstallationDate"]
+        },
+        "required": false
+      }
+    }
+  },
+  
+  "lexical_units": [
+    {
+      "word": "asset",
+      "pos": "noun",
+      "definition": "Building considered as valuable property",
+      "ifc_context": "IfcBuilding entity representing economic value"
+    },
+    {
+      "word": "building",
+      "pos": "noun", 
+      "definition": "Permanent structure for human use",
+      "ifc_context": "Primary IfcBuilding entity"
+    },
+    {
+      "word": "commercial building",
+      "pos": "noun",
+      "definition": "Building used for business purposes",
+      "ifc_context": "IfcBuilding with COMMERCIAL composition type"
+    },
+    {
+      "word": "construction",
+      "pos": "noun",
+      "definition": "Building during construction phase",
+      "ifc_context": "IfcBuilding with construction status properties"
+    },
+    {
+      "word": "development",
+      "pos": "noun",
+      "definition": "Building project under development",
+      "ifc_context": "IfcProject containing building development"
+    },
+    {
+      "word": "facility",
+      "pos": "noun",
+      "definition": "Building providing specific services",
+      "ifc_context": "IfcBuilding with facility management properties"
+    },
+    {
+      "word": "house",
+      "pos": "noun",
+      "definition": "Residential building for dwelling",
+      "ifc_context": "IfcBuilding with RESIDENTIAL composition type"
+    },
+    {
+      "word": "infrastructure",
+      "pos": "noun",
+      "definition": "Essential building systems and services",
+      "ifc_context": "IfcSystem and IfcBuildingSystem collections"
+    },
+    {
+      "word": "office building",
+      "pos": "noun",
+      "definition": "Building designed for office work",
+      "ifc_context": "IfcBuilding with OFFICE use designation"
+    },
+    {
+      "word": "property",
+      "pos": "noun",
+      "definition": "Building as real estate asset",
+      "ifc_context": "IfcBuilding with ownership and legal properties"
+    },
+    {
+      "word": "residential building",
+      "pos": "noun",
+      "definition": "Building for residential occupancy",
+      "ifc_context": "IfcBuilding with RESIDENTIAL classification"
+    },
+    {
+      "word": "structure",
+      "pos": "noun",
+      "definition": "Building emphasizing physical construction",
+      "ifc_context": "IfcBuilding with structural system focus"
+    },
+    {
+      "word": "tower",
+      "pos": "noun",
+      "definition": "Tall building structure",
+      "ifc_context": "IfcBuilding with height-related properties"
+    }
+  ],
+  
+  "ifc_spatial_hierarchy": {
+    "level": 3,
+    "parent": "IfcSite",
+    "entity": "IfcBuilding",
+    "children": [
+      "IfcBuildingStorey",
+      "IfcSpace"
+    ],
+    "relationships": {
+      "aggregation": "IfcRelAggregates (contains building storeys)",
+      "spatial_containment": "IfcRelContainedInSpatialStructure (contains building elements)",
+      "assignment": "IfcRelAssignsToGroup (building systems assignment)"
+    }
+  },
+  
+  "ifc_property_sets": {
+    "Pset_BuildingCommon": {
+      "BuildingID": {
+        "type": "IfcIdentifier",
+        "frame_element": "Asset",
+        "description": "Unique building identifier"
+      },
+      "YearOfConstruction": {
+        "type": "IfcDate",
+        "frame_element": "Condition",
+        "description": "Year building was constructed"
+      },
+      "IsLandmarked": {
+        "type": "IfcBoolean",
+        "frame_element": "Asset",
+        "description": "Historic landmark designation"
+      },
+      "GrossFloorArea": {
+        "type": "IfcAreaMeasure",
+        "frame_element": "Asset",
+        "description": "Total floor area of building"
+      },
+      "NetFloorArea": {
+        "type": "IfcAreaMeasure",
+        "frame_element": "Asset", 
+        "description": "Usable floor area"
+      },
+      "BuildingUse": {
+        "type": "IfcLabel",
+        "frame_element": "Function",
+        "description": "Primary use classification"
+      }
+    },
+    "Pset_BuildingElementCommon": {
+      "Status": {
+        "type": "IfcLabel",
+        "frame_element": "Condition",
+        "description": "Current operational status"
+      },
+      "InstallationDate": {
+        "type": "IfcDate",
+        "frame_element": "Condition",
+        "description": "Date of installation or occupancy"
+      }
+    }
+  },
+  
+  "building_systems_integration": {
+    "structural_system": {
+      "ifc_system": "IfcStructuralSystem",
+      "components": ["IfcWall", "IfcSlab", "IfcBeam", "IfcColumn"],
+      "frame_relation": "Building_Component frame instances"
+    },
+    "mep_systems": {
+      "hvac": {
+        "ifc_system": "IfcBuildingSystem",
+        "subtype": "HVAC",
+        "components": ["IfcAirTerminal", "IfcDuct", "IfcFan"]
+      },
+      "electrical": {
+        "ifc_system": "IfcBuildingSystem", 
+        "subtype": "ELECTRICAL",
+        "components": ["IfcOutlet", "IfcLightFixture", "IfcCable"]
+      },
+      "plumbing": {
+        "ifc_system": "IfcBuildingSystem",
+        "subtype": "PLUMBING",
+        "components": ["IfcSanitaryTerminal", "IfcPipe", "IfcValve"]
+      }
+    }
+  },
+  
+  "frame_relations": {
+    "inherits_from": [],
+    "is_inherited_by": [
+      "Building_Component",
+      "Building_System"
+    ],
+    "precedes": [],
+    "is_preceded_by": [],
+    "is_causative_of": [
+      "Construction"
+    ],
+    "is_inchoative_of": [],
+    "uses": [
+      "Architecture",
+      "Building_subparts"
+    ],
+    "subframe_of": [],
+    "has_subframes": [
+      "Building_Component",
+      "Building_System",
+      "Spatial_Structure"
+    ]
+  },
+  
+  "iso_standards_alignment": {
+    "ISO_16739_1": {
+      "description": "IFC Data Schema - Industry Foundation Classes",
+      "compliance_level": "Full",
+      "mapped_elements": {
+        "Asset": "IfcBuilding entity with property sets",
+        "Location": "IfcSite spatial container relationship", 
+        "Function": "IfcBuilding.CompositionType and use properties",
+        "Owner": "IfcActor with OWNER role assignment",
+        "Manager": "IfcActor with FACILITIESMANAGER role assignment"
+      },
+      "spatial_hierarchy": "Project > Site > Building > Storey > Space",
+      "relationship_modeling": "Full IFC relationship graph support"
+    },
+    "ISO_19650_1": {
+      "description": "BIM Management using Information Management",
+      "mapped_elements": {
+        "Owner": "Appointing party role in BIM process",
+        "Manager": "Appointed party role in BIM process", 
+        "Function": "Asset information requirements definition"
+      }
+    }
+  },
+  
+  "professional_terminology": {
+    "architecture": ["design", "planning", "spatial arrangement"],
+    "construction": ["building", "erection", "assembly"],
+    "facility_management": ["operations", "maintenance", "lifecycle"],
+    "real_estate": ["property", "asset", "investment"],
+    "building_codes": ["compliance", "regulations", "standards"]
+  },
+  
+  "integration_metadata": {
+    "semantic_frame_preservation": true,
+    "ifc_hierarchy_compliance": true,
+    "lexical_unit_enhancement": true,
+    "professional_vocabulary_maintained": true,
+    "bidirectional_mapping": "Frame elements ↔ IFC properties",
+    "extensibility": "Ready for additional IFC entities and properties"
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "frame": "Robot",
+  "description": "Root semantic frame for robot entity following ISO 8373 standards and SRDL principles",
+  "lexical_units": [
+    "robot", "industrial robot", "service robot", "autonomous system", 
+    "robotic system", "manipulator", "mobile robot", "humanoid robot",
+    "collaborative robot", "cobot", "robotic device", "android"
+  ],
+  "frame_elements": {
+    "core": {
+      "Agent": {
+        "description": "The robot entity that performs actions and exhibits capabilities",
+        "semantic_type": "Physical_entity"
+      },
+      "Function": {
+        "description": "The primary purpose or role the robot is designed to fulfill",
+        "semantic_type": "State_of_affairs"
+      },
+      "Domain": {
+        "description": "The application area or environment where the robot operates",
+        "semantic_type": "Location"
+      }
+    },
+    "peripheral": {
+      "Designer": {
+        "description": "The entity responsible for creating or programming the robot",
+        "semantic_type": "Sentient"
+      },
+      "Operator": {
+        "description": "The human who controls, supervises, or collaborates with the robot",
+        "semantic_type": "Sentient"
+      },
+      "Configuration": {
+        "description": "The specific setup, arrangement, or operational mode of the robot",
+        "semantic_type": "Manner"
+      },
+      "Specifications": {
+        "description": "Technical parameters, capabilities, or performance metrics",
+        "semantic_type": "Attribute"
+      }
+    },
+    "extra_thematic": {
+      "Time": {
+        "description": "Temporal aspects of robot operation or lifecycle",
+        "semantic_type": "Time"
+      },
+      "Place": {
+        "description": "Spatial location where the robot is deployed or operates",
+        "semantic_type": "Location"
+      },
+      "Purpose": {
+        "description": "The intended goal or objective for robot deployment",
+        "semantic_type": "State_of_affairs"
+      }
+    }
+  },
+  "properties": {
+    "identifier": {
+      "type": "string",
+      "description": "Unique identifier for the robot instance"
+    },
+    "name": {
+      "type": "string", 
+      "description": "Human-readable name of the robot"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["industrial_robot", "service_robot", "mobile_robot", "humanoid_robot", "medical_robot"],
+      "description": "Classification based on ISO 8373 robot types"
+    },
+    "base_coordinate_system": {
+      "type": "coordinate_system",
+      "description": "Reference coordinate system for the robot base (ISO 8373:5.8)"
+    },
+    "maximum_space": {
+      "type": "spatial_bounds",
+      "description": "Space which can be swept by moving parts plus end-effector and workpiece (ISO 8373:5.13)"
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Component"
+      },
+      "description": "Physical components that constitute the robot"
+    },
+    "capabilities": {
+      "type": "array", 
+      "items": {
+        "$ref": "#/definitions/Capability"
+      },
+      "description": "Functional capabilities enabled by robot components"
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Action" 
+      },
+      "description": "Specific actions the robot can perform"
+    },
+    "operating_modes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["manual_mode", "automatic_mode", "semi_autonomous_mode", "autonomous_mode"]
+      },
+      "description": "Supported operating modes (ISO 8373:6.13)"
+    },
+    "safety_features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Safety-related functions and protective measures"
+    }
+  },
+  "relationships": {
+    "has_component": {
+      "target": "Component",
+      "cardinality": "one_to_many",
+      "description": "Robot is composed of multiple components"
+    },
+    "exhibits_capability": {
+      "target": "Capability", 
+      "cardinality": "one_to_many",
+      "description": "Robot exhibits capabilities enabled by its components"
+    },
+    "performs_action": {
+      "target": "Action",
+      "cardinality": "one_to_many", 
+      "description": "Robot can perform various actions through its capabilities"
+    }
+  },
+  "constraints": {
+    "component_capability_consistency": "All capabilities must be enabled by at least one component",
+    "action_capability_dependency": "All actions must be supported by at least one capability",
+    "safety_compliance": "Robot must implement required safety features for its operating environment"
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "frame": "Action",
+  "description": "Specific atomic or composite behavior that a robot can perform to accomplish tasks",
+  "lexical_units": [
+    "pick", "place", "grasp", "release", "move", "navigate", "rotate", "lift",
+    "carry", "transport", "assemble", "disassemble", "inspect", "monitor",
+    "detect", "recognize", "avoid", "approach", "follow", "track", "search",
+    "scan", "manipulate", "operate", "activate", "deactivate", "calibrate"
+  ],
+  "frame_elements": {
+    "core": {
+      "Agent": {
+        "description": "The robot performing the action",
+        "semantic_type": "Physical_entity"
+      },
+      "Action": {
+        "description": "The specific behavior or task being performed",
+        "semantic_type": "Event"
+      },
+      "Object": {
+        "description": "The target entity being acted upon",
+        "semantic_type": "Physical_entity"
+      }
+    },
+    "peripheral": {
+      "Instrument": {
+        "description": "The component, tool, or effector used to perform the action",
+        "semantic_type": "Physical_entity"
+      },
+      "Method": {
+        "description": "The technique, algorithm, or approach used",
+        "semantic_type": "Means"
+      },
+      "Parameters": {
+        "description": "Input values, settings, or configurations for action execution",
+        "semantic_type": "Attribute"
+      },
+      "Result": {
+        "description": "The outcome or effect of the action",
+        "semantic_type": "State_of_affairs"
+      }
+    },
+    "extra_thematic": {
+      "Purpose": {
+        "description": "The intended goal or reason for performing the action",
+        "semantic_type": "State_of_affairs"
+      },
+      "Duration": {
+        "description": "How long the action takes to complete",
+        "semantic_type": "Time"
+      },
+      "Location": {
+        "description": "Where the action takes place",
+        "semantic_type": "Location"
+      },
+      "Manner": {
+        "description": "How the action is performed (carefully, quickly, etc.)",
+        "semantic_type": "Manner"
+      }
+    }
+  },
+  "properties": {
+    "identifier": {
+      "type": "string",
+      "description": "Unique identifier for the action"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the action"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "atomic", "composite", "sequential", "parallel", "conditional", 
+        "iterative", "pick", "place", "move", "rotate", "grasp", "release",
+        "navigate", "avoid", "search", "inspect", "communicate", "wait",
+        "plan", "learn", "calibrate", "monitor"
+      ],
+      "description": "Type of action based on complexity and execution pattern"
+    },
+    "description": {
+      "type": "string", 
+      "description": "Detailed description of what the action accomplishes"
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "Capabilities required to execute this action"
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Input parameters and their specifications for action execution",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["position", "orientation", "velocity", "force", "time", "object", "boolean", "string", "number"]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "default_value": {},
+          "constraints": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "preconditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Conditions that must be true before action execution"
+    },
+    "postconditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Expected state after successful action execution"
+    },
+    "failure_conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Conditions that indicate action failure"
+    },
+    "execution_time": {
+      "type": "object",
+      "properties": {
+        "estimated_duration": {
+          "type": "number",
+          "description": "Estimated execution time in seconds"
+        },
+        "timeout": {
+          "type": "number",
+          "description": "Maximum allowed execution time in seconds"
+        }
+      }
+    },
+    "resource_requirements": {
+      "type": "object",
+      "properties": {
+        "computational": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"]
+        },
+        "memory": {
+          "type": "string", 
+          "enum": ["low", "medium", "high", "critical"]
+        },
+        "power": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"]
+        }
+      }
+    },
+    "safety_level": {
+      "type": "string",
+      "enum": ["safe", "cautious", "restricted", "critical"],
+      "description": "Safety classification for action execution"
+    },
+    "sub_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string"
+          },
+          "execution_order": {
+            "type": "number"
+          },
+          "dependency": {
+            "type": "string",
+            "enum": ["none", "sequential", "conditional", "parallel"]
+          }
+        }
+      },
+      "description": "Sub-actions for composite actions"
+    }
+  },
+  "relationships": {
+    "performed_by": {
+      "target": "Robot",
+      "cardinality": "many_to_one", 
+      "description": "Action is performed by a robot"
+    },
+    "requires": {
+      "target": "Capability",
+      "cardinality": "many_to_many",
+      "description": "Action requires specific capabilities"
+    },
+    "uses": {
+      "target": "Component",
+      "cardinality": "many_to_many",
+      "description": "Action uses specific components during execution"
+    },
+    "depends_on": {
+      "target": "Action",
+      "cardinality": "many_to_many",
+      "description": "Dependencies on other actions for execution"
+    },
+    "triggers": {
+      "target": "Action",
+      "cardinality": "one_to_many", 
+      "description": "Actions that this action can trigger"
+    },
+    "composed_of": {
+      "target": "Action",
+      "cardinality": "one_to_many",
+      "description": "Sub-actions that compose this action"
+    }
+  },
+  "constraints": {
+    "capability_availability": "All required capabilities must be available and functional",
+    "precondition_satisfaction": "All preconditions must be satisfied before execution",
+    "resource_availability": "Required computational, memory, and power resources must be available",
+    "safety_compliance": "Action execution must comply with safety level requirements",
+    "timeout_compliance": "Action must complete within specified timeout period",
+    "dependency_resolution": "All action dependencies must be resolved before execution"
+  }
+}

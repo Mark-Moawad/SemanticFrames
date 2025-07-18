@@ -1,0 +1,183 @@
+{
+  "frame": "Component",
+  "description": "Physical component or module that is part of a robot system, following SRDL modularity principles",
+  "lexical_units": [
+    "actuator", "sensor", "end-effector", "manipulator", "gripper", "controller",
+    "servo", "motor", "encoder", "camera", "lidar", "proximity sensor", 
+    "force sensor", "vision system", "drive system", "arm", "joint", "link",
+    "base", "wrist", "tool", "effector", "mechanical unit"
+  ],
+  "frame_elements": {
+    "core": {
+      "Component": {
+        "description": "The physical part or subsystem of the robot",
+        "semantic_type": "Physical_entity"
+      },
+      "Whole": {
+        "description": "The robot system that contains this component",
+        "semantic_type": "Physical_entity"
+      },
+      "Function": {
+        "description": "The specific role or capability this component provides",
+        "semantic_type": "State_of_affairs"
+      }
+    },
+    "peripheral": {
+      "Specifications": {
+        "description": "Technical parameters like DOF, payload, accuracy, range",
+        "semantic_type": "Attribute"
+      },
+      "Material": {
+        "description": "The physical material or construction of the component",
+        "semantic_type": "Substance"
+      },
+      "Configuration": {
+        "description": "How the component is arranged or connected within the system",
+        "semantic_type": "Manner"
+      },
+      "Interface": {
+        "description": "The connection method or communication protocol with other components",
+        "semantic_type": "Means"
+      }
+    },
+    "extra_thematic": {
+      "Manufacturer": {
+        "description": "The entity that produced or manufactured the component",
+        "semantic_type": "Sentient"
+      },
+      "Model": {
+        "description": "The specific model or version identifier of the component",
+        "semantic_type": "Attribute"
+      },
+      "Status": {
+        "description": "The operational state of the component (active, standby, fault, etc.)",
+        "semantic_type": "State"
+      }
+    }
+  },
+  "properties": {
+    "identifier": {
+      "type": "string",
+      "description": "Unique identifier for the component instance"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the component"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "actuator", "robot_actuator", "manipulator", "arm", "wrist", "end_effector", "gripper",
+        "joint", "prismatic_joint", "revolute_joint", "link", "base", "mobile_platform",
+        "sensor", "proprioceptive_sensor", "exteroceptive_sensor", "control_system", "robot_controller"
+      ],
+      "description": "Component type based on ISO 8373 mechanical structure taxonomy"
+    },
+    "specifications": {
+      "type": "object",
+      "properties": {
+        "degrees_of_freedom": {
+          "type": "integer",
+          "description": "Number of degrees of freedom (ISO 8373:5.4)"
+        },
+        "payload_capacity": {
+          "type": "number",
+          "unit": "kg",
+          "description": "Maximum rated load the component can handle (ISO 8373:7.2.1)"
+        },
+        "reach": {
+          "type": "number", 
+          "unit": "mm",
+          "description": "Maximum reach of the component"
+        },
+        "accuracy": {
+          "type": "number",
+          "unit": "mm", 
+          "description": "Pose accuracy specification (ISO 8373:7.5)"
+        },
+        "repeatability": {
+          "type": "number",
+          "unit": "mm",
+          "description": "Pose repeatability specification (ISO 8373:7.6)"
+        },
+        "velocity": {
+          "type": "number",
+          "description": "Maximum velocity specification"
+        }
+      }
+    },
+    "coordinate_system": {
+      "type": "coordinate_system",
+      "description": "Local coordinate system of the component"
+    },
+    "parent_component": {
+      "type": "string",
+      "description": "Reference to parent component in kinematic chain"
+    },
+    "child_components": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "References to child components in kinematic chain"
+    },
+    "enables_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Capabilities that this component enables or contributes to"
+    },
+    "configuration_parameters": {
+      "type": "object",
+      "description": "Component-specific configuration and calibration parameters"
+    },
+    "operating_conditions": {
+      "type": "object",
+      "properties": {
+        "temperature_range": {
+          "type": "object",
+          "properties": {
+            "min": {"type": "number", "unit": "celsius"},
+            "max": {"type": "number", "unit": "celsius"}
+          }
+        },
+        "humidity_range": {
+          "type": "object", 
+          "properties": {
+            "min": {"type": "number", "unit": "percent"},
+            "max": {"type": "number", "unit": "percent"}
+          }
+        }
+      },
+      "description": "Normal operating conditions for the component (ISO 8373:7.1)"
+    }
+  },
+  "relationships": {
+    "part_of": {
+      "target": "Robot",
+      "cardinality": "many_to_one",
+      "description": "Component is part of a robot system"
+    },
+    "connected_to": {
+      "target": "Component",
+      "cardinality": "many_to_many", 
+      "description": "Physical or logical connections to other components"
+    },
+    "enables": {
+      "target": "Capability",
+      "cardinality": "one_to_many",
+      "description": "Component enables specific robot capabilities"
+    },
+    "supports": {
+      "target": "Action",
+      "cardinality": "one_to_many",
+      "description": "Component supports execution of specific actions"
+    }
+  },
+  "constraints": {
+    "kinematic_consistency": "Child components must be properly positioned relative to parent",
+    "load_constraints": "Component load must not exceed rated specifications",
+    "operating_range": "Component must operate within specified environmental conditions"
+  }
+}

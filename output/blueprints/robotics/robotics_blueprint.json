@@ -1,0 +1,275 @@
+{
+  "name": "Robotics_Hierarchical_Blueprint",
+  "description": "Comprehensive hierarchical robotics blueprint integrating semantic frames following ISO 8373 standards and SRDL principles",
+  "version": "1.0",
+  "iso_standard": "ISO 8373:2021",
+  "creation_date": "2025-01-11",
+  "integration_method": "Semantic Frame + Robotics Component Hierarchy",
+  
+  "robotics_hierarchy_root": {
+    "Robot": {
+      "description": "Root semantic frame for robot entity following ISO 8373 standards and SRDL principles",
+      "semantic_frame": "Robot",
+      "frame_elements": {
+        "core": ["Agent", "Function", "Domain"],
+        "peripheral": ["Designer", "Operator", "Configuration", "Specifications"],
+        "extra_thematic": ["Time", "Place", "Manner", "Purpose"]
+      },
+      "lexical_units": [
+        "robot", "industrial robot", "service robot", "autonomous system", 
+        "robotic system", "manipulator", "mobile robot", "humanoid robot",
+        "collaborative robot", "cobot", "robotic device", "android"
+      ],
+      "children": {
+        "Component": {
+          "description": "Physical component or module that is part of a robot system, following SRDL modularity principles",
+          "semantic_frame": "Component",
+          "frame_elements": {
+            "core": ["Component", "Whole", "Function"],
+            "peripheral": ["Specifications", "Material", "Configuration", "Interface"],
+            "extra_thematic": ["Manufacturer", "Model", "Serial_Number", "Installation_Date"]
+          },
+          "lexical_units": [
+            "actuator", "sensor", "end-effector", "manipulator", "gripper", "controller",
+            "servo", "motor", "encoder", "camera", "lidar", "proximity sensor", 
+            "force sensor", "vision system", "drive system", "arm", "joint", "link",
+            "base", "wrist", "tool", "effector", "mechanical unit"
+          ],
+          "component_hierarchy": {
+            "Actuator_Components": {
+              "description": "Components that provide motion and force",
+              "lexical_units": ["actuator", "servo", "motor", "drive", "pneumatic cylinder", "hydraulic actuator"],
+              "subtypes": ["Electric_Motor", "Pneumatic_Actuator", "Hydraulic_Actuator", "Servo_Motor"]
+            },
+            "Sensor_Components": {
+              "description": "Components that provide sensing and measurement capabilities",
+              "lexical_units": ["sensor", "camera", "lidar", "encoder", "proximity sensor", "force sensor", "vision system"],
+              "subtypes": ["Vision_Sensor", "Position_Sensor", "Force_Sensor", "Proximity_Sensor", "Environmental_Sensor"]
+            },
+            "End_Effector_Components": {
+              "description": "Components that interact directly with the environment",
+              "lexical_units": ["end-effector", "gripper", "tool", "hand", "claw", "suction cup"],
+              "subtypes": ["Parallel_Gripper", "Angular_Gripper", "Vacuum_Gripper", "Magnetic_Gripper", "Custom_Tool"]
+            },
+            "Manipulator_Components": {
+              "description": "Components that provide articulated motion",
+              "lexical_units": ["manipulator", "arm", "joint", "link", "wrist", "shoulder", "elbow"],
+              "subtypes": ["Revolute_Joint", "Prismatic_Joint", "Spherical_Joint", "Link_Segment"]
+            },
+            "Control_Components": {
+              "description": "Components that provide computation and control",
+              "lexical_units": ["controller", "computer", "processor", "PLC", "embedded system"],
+              "subtypes": ["Motion_Controller", "Safety_Controller", "Vision_Processor", "Edge_Computer"]
+            },
+            "Power_Components": {
+              "description": "Components that provide electrical power",
+              "lexical_units": ["power supply", "battery", "transformer", "inverter", "UPS"],
+              "subtypes": ["AC_Power_Supply", "DC_Power_Supply", "Battery_Pack", "Power_Management_Unit"]
+            }
+          }
+        },
+        "Capability": {
+          "description": "Functional capability or skill that emerges from robot components and enables specific behaviors",
+          "semantic_frame": "Capability",
+          "frame_elements": {
+            "core": ["Agent", "Capability", "Domain"],
+            "peripheral": ["Enabler", "Performance", "Degree", "Method"],
+            "extra_thematic": ["Beneficiary", "Condition", "Standard", "Measurement"]
+          },
+          "lexical_units": [
+            "manipulation", "locomotion", "navigation", "sensing", "perception", "grasping",
+            "mobility", "dexterity", "precision", "autonomy", "learning", "adaptation",
+            "object recognition", "path planning", "obstacle avoidance", "collaboration",
+            "communication", "decision making", "reasoning", "planning"
+          ],
+          "capability_hierarchy": {
+            "Manipulation_Capabilities": {
+              "description": "Capabilities related to physical manipulation of objects",
+              "lexical_units": ["manipulation", "grasping", "dexterity", "precision", "pick and place"],
+              "subtypes": ["Fine_Manipulation", "Gross_Manipulation", "Bi_Manual_Manipulation", "Force_Control"]
+            },
+            "Mobility_Capabilities": {
+              "description": "Capabilities related to robot movement and positioning",
+              "lexical_units": ["locomotion", "mobility", "navigation", "positioning", "path following"],
+              "subtypes": ["Wheeled_Mobility", "Legged_Mobility", "Aerial_Mobility", "Underwater_Mobility"]
+            },
+            "Perception_Capabilities": {
+              "description": "Capabilities related to sensing and understanding the environment",
+              "lexical_units": ["sensing", "perception", "object recognition", "environment mapping", "localization"],
+              "subtypes": ["Visual_Perception", "Tactile_Perception", "Auditory_Perception", "Multi_Modal_Perception"]
+            },
+            "Cognitive_Capabilities": {
+              "description": "Capabilities related to reasoning, planning, and decision making",
+              "lexical_units": ["reasoning", "planning", "decision making", "learning", "adaptation"],
+              "subtypes": ["Path_Planning", "Task_Planning", "Machine_Learning", "Adaptive_Control"]
+            },
+            "Communication_Capabilities": {
+              "description": "Capabilities related to interaction with humans and other systems",
+              "lexical_units": ["communication", "collaboration", "human-robot interaction", "networking"],
+              "subtypes": ["Human_Robot_Interface", "Robot_Robot_Communication", "Multi_Modal_Communication"]
+            },
+            "Safety_Capabilities": {
+              "description": "Capabilities related to safe operation and collision avoidance",
+              "lexical_units": ["safety", "collision avoidance", "emergency stop", "fault detection"],
+              "subtypes": ["Collision_Avoidance", "Emergency_Response", "Fault_Tolerance", "Safety_Monitoring"]
+            }
+          }
+        },
+        "Action": {
+          "description": "Specific atomic or composite behavior that a robot can perform to accomplish tasks",
+          "semantic_frame": "Action",
+          "frame_elements": {
+            "core": ["Agent", "Action", "Object"],
+            "peripheral": ["Instrument", "Method", "Parameters", "Result"],
+            "extra_thematic": ["Purpose", "Duration", "Location", "Condition"]
+          },
+          "lexical_units": [
+            "pick", "place", "grasp", "release", "move", "navigate", "rotate", "lift",
+            "carry", "transport", "assemble", "disassemble", "inspect", "monitor",
+            "detect", "recognize", "avoid", "approach", "follow", "track", "search",
+            "scan", "manipulate", "operate", "activate", "deactivate", "calibrate"
+          ],
+          "action_hierarchy": {
+            "Manipulation_Actions": {
+              "description": "Actions involving physical manipulation of objects",
+              "lexical_units": ["pick", "place", "grasp", "release", "manipulate", "assemble", "disassemble"],
+              "subtypes": ["Pick_Action", "Place_Action", "Grasp_Action", "Release_Action", "Assembly_Action"]
+            },
+            "Navigation_Actions": {
+              "description": "Actions involving robot movement and positioning",
+              "lexical_units": ["move", "navigate", "approach", "follow", "avoid", "position"],
+              "subtypes": ["Point_To_Point_Motion", "Trajectory_Following", "Obstacle_Avoidance", "Path_Execution"]
+            },
+            "Sensing_Actions": {
+              "description": "Actions involving data collection and perception",
+              "lexical_units": ["detect", "recognize", "scan", "monitor", "inspect", "measure"],
+              "subtypes": ["Object_Detection", "Environment_Scanning", "Quality_Inspection", "Data_Collection"]
+            },
+            "Communication_Actions": {
+              "description": "Actions involving information exchange",
+              "lexical_units": ["communicate", "report", "request", "acknowledge", "signal"],
+              "subtypes": ["Status_Reporting", "Command_Acknowledgment", "Data_Transmission", "Alert_Generation"]
+            },
+            "Maintenance_Actions": {
+              "description": "Actions related to system maintenance and calibration",
+              "lexical_units": ["calibrate", "diagnose", "maintain", "reset", "update"],
+              "subtypes": ["System_Calibration", "Self_Diagnosis", "Software_Update", "Component_Reset"]
+            }
+          }
+        }
+      }
+    }
+  },
+  
+  "semantic_relationships": {
+    "compositional": [
+      {"parent": "Robot", "child": "Component", "relationship": "has_component", "cardinality": "one_to_many"},
+      {"parent": "Component", "child": "Component", "relationship": "contains_subcomponent", "cardinality": "one_to_many"}
+    ],
+    "functional": [
+      {"enabler": "Component", "enabled": "Capability", "relationship": "enables", "cardinality": "many_to_many"},
+      {"capability": "Capability", "action": "Action", "relationship": "supports", "cardinality": "one_to_many"},
+      {"actor": "Robot", "action": "Action", "relationship": "performs", "cardinality": "one_to_many"}
+    ],
+    "emergent": [
+      {"components": "Component", "emergent": "Capability", "relationship": "gives_rise_to", "cardinality": "many_to_one"},
+      {"capabilities": "Capability", "emergent": "Behavior", "relationship": "enables_complex", "cardinality": "many_to_one"}
+    ]
+  },
+  
+  "hierarchical_relationships": {
+    "robot_to_components": {
+      "description": "Robot contains multiple components in a hierarchical structure",
+      "relationship_type": "part_whole",
+      "constraints": ["components must be compatible", "interfaces must match", "power requirements must be satisfied"]
+    },
+    "component_to_capabilities": {
+      "description": "Components enable capabilities through their specifications and functions",
+      "relationship_type": "enablement",
+      "constraints": ["capability requirements must match component specifications", "multiple components may be required for complex capabilities"]
+    },
+    "capability_to_actions": {
+      "description": "Capabilities support the execution of specific actions",
+      "relationship_type": "support",
+      "constraints": ["action requirements must be within capability limits", "environmental constraints must be satisfied"]
+    }
+  },
+  
+  "frame_integration_patterns": {
+    "robot_instantiation": {
+      "description": "Pattern for creating specific robot instances",
+      "required_frames": ["Robot", "Component", "Capability"],
+      "optional_frames": ["Action"],
+      "constraints": [
+        "Robot must have at least one Component",
+        "Components must enable at least one Capability",
+        "All frame elements must be consistently populated"
+      ]
+    },
+    "capability_realization": {
+      "description": "Pattern for describing how capabilities emerge from components",
+      "required_frames": ["Component", "Capability"],
+      "optional_frames": ["Action"],
+      "constraints": [
+        "Capability enablers must reference existing Components",
+        "Performance metrics must be measurable",
+        "Dependencies between capabilities must be explicit"
+      ]
+    },
+    "action_execution": {
+      "description": "Pattern for describing robot action performance",
+      "required_frames": ["Robot", "Action", "Capability"],
+      "optional_frames": ["Component"],
+      "constraints": [
+        "Action agent must reference the performing Robot",
+        "Required capabilities must be available",
+        "Action parameters must be within capability limits"
+      ]
+    }
+  },
+  
+  "domain_specializations": {
+    "industrial_robotics": {
+      "description": "Specialization for industrial manufacturing applications",
+      "emphasized_components": ["Manipulator_Components", "Sensor_Components", "Control_Components"],
+      "emphasized_capabilities": ["Manipulation_Capabilities", "Perception_Capabilities"],
+      "emphasized_actions": ["Manipulation_Actions", "Sensing_Actions"],
+      "standards": ["ISO 8373", "ISO 10218", "IEC 61508"]
+    },
+    "service_robotics": {
+      "description": "Specialization for service and assistance applications",
+      "emphasized_components": ["Sensor_Components", "Control_Components", "Power_Components"],
+      "emphasized_capabilities": ["Mobility_Capabilities", "Communication_Capabilities", "Safety_Capabilities"],
+      "emphasized_actions": ["Navigation_Actions", "Communication_Actions"],
+      "standards": ["ISO 8373", "ISO 13482"]
+    },
+    "mobile_robotics": {
+      "description": "Specialization for autonomous mobile applications",
+      "emphasized_components": ["Sensor_Components", "Control_Components"],
+      "emphasized_capabilities": ["Mobility_Capabilities", "Perception_Capabilities", "Cognitive_Capabilities"],
+      "emphasized_actions": ["Navigation_Actions", "Sensing_Actions"],
+      "standards": ["ISO 8373", "ISO 17757"]
+    }
+  },
+  
+  "annotation_guidelines": {
+    "frame_element_annotation": {
+      "description": "Guidelines for annotating frame elements in robotics text",
+      "core_elements": "Must be present for valid frame instantiation",
+      "peripheral_elements": "Provide additional context and specificity",
+      "extra_thematic_elements": "Capture situational and temporal information"
+    },
+    "lexical_unit_coverage": {
+      "description": "Guidelines for identifying robotics-specific terminology",
+      "technical_terms": "Include ISO 8373 standard terminology",
+      "domain_variants": "Include domain-specific variations and synonyms",
+      "multi_word_expressions": "Handle compound technical terms appropriately"
+    },
+    "relationship_annotation": {
+      "description": "Guidelines for annotating relationships between frames",
+      "compositional": "Physical part-whole relationships",
+      "functional": "Capability and performance relationships", 
+      "temporal": "Sequence and timing relationships"
+    }
+  }
+}

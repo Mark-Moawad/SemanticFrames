@@ -1,3 +1,11 @@
+# Data subdirectories
+data/norms/
+data/norms_txt/
+data/resources/
+data/resources_txt/
+data/rag_index/
+data/build_rag_index/
+data/extracted_frames/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -144,6 +152,9 @@ ENV/
 env.bak/
 venv.bak/
 
+# VS Code
+.vscode/
+
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -210,3 +221,9 @@ __marimo__/
 #  Data files that are not part of the source code, such as datasets, models, or other large files.
 #  These files are typically large and not suitable for version control.
 data/
+norms/
+norms_txt/
+resources/
+
+# toml
+.toml

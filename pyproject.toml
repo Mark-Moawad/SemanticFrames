@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "semantic-frames"
+version = "0.1.0"
+description = "Semantic Frame Extraction System for Construction Robotics"
+authors = [{name = "Mark Moawad", email = "mark@example.com"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "requests",
+    "networkx", 
+    "dash",
+    "plotly",
+    "pandas",
+    "numpy",
+    "dash-bootstrap-components",
+    "dash-cytoscape"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.pylsp-mypy]
+enabled = true
+live_mode = true
+strict = true

@@ -1,0 +1,501 @@
+{
+  "name": "IFC_Hierarchical_Blueprint",
+  "description": "Comprehensive IFC-compliant hierarchical building blueprint integrating semantic frames with official ISO 16739-1 structure",
+  "version": "1.0",
+  "iso_standard": "ISO 16739-1:2018",
+  "creation_date": "2025-01-11",
+  "integration_method": "Semantic Frame + IFC Hierarchy Fusion",
+  
+  "ifc_hierarchy_root": {
+    "IfcProject": {
+      "description": "Root container for all IFC information in a construction project",
+      "semantic_frame": "Project",
+      "frame_elements": {
+        "core": ["Objective", "Participants", "Duration", "Resources"],
+        "peripheral": ["Constraints", "Standards", "Documentation"]
+      },
+      "lexical_units": ["project", "development", "construction project", "building project"],
+      "children": {
+        "IfcSite": {
+          "description": "Geographical and logical container for a construction site",
+          "semantic_frame": "Location_by_terrain",
+          "frame_elements": {
+            "core": ["Ground", "Boundaries", "Access"],
+            "peripheral": ["Terrain", "Climate", "Services"]
+          },
+          "lexical_units": ["site", "plot", "land", "property", "grounds"],
+          "children": {
+            "IfcBuilding": {
+              "description": "Single building within a site",
+              "semantic_frame": "Building",
+              "frame_elements": {
+                "core": ["Asset", "Function", "Location"],
+                "peripheral": ["Owner", "Manager", "Purpose", "Condition"]
+              },
+              "lexical_units": [
+                "asset", "building", "commercial building", "construction", 
+                "development", "facility", "house", "infrastructure", 
+                "office building", "property", "residential building", 
+                "structure", "tower"
+              ],
+              "children": {
+                "IfcBuildingStorey": {
+                  "description": "Horizontal subdivision of a building",
+                  "semantic_frame": "Building_subparts",
+                  "frame_elements": {
+                    "core": ["Level", "Elevation", "Spaces"],
+                    "peripheral": ["Access", "Services", "Structure"]
+                  },
+                  "lexical_units": ["floor", "level", "storey", "story", "deck", "tier"],
+                  "children": {
+                    "IfcSpace": {
+                      "description": "Bounded volume within a building",
+                      "semantic_frame": "Locale_by_use",
+                      "frame_elements": {
+                        "core": ["Use", "Area", "Volume", "Boundaries"],
+                        "peripheral": ["Occupancy", "Comfort", "Safety"]
+                      },
+                      "lexical_units": ["room", "space", "area", "zone", "compartment", "chamber"],
+                      "spatial_elements": {
+                        "IfcWall": {
+                          "description": "Vertical building element for enclosure or separation",
+                          "semantic_frame": "Building_Component",
+                          "frame_elements": {
+                            "core": ["Component_Type", "Material", "Function", "Location"],
+                            "peripheral": ["Installation_Date", "Condition", "Maintenance"]
+                          },
+                          "lexical_units": ["wall", "partition", "barrier", "enclosure"],
+                          "ifc_properties": {
+                            "structural": true,
+                            "load_bearing": "optional",
+                            "thermal_properties": "required",
+                            "fire_rating": "optional"
+                          }
+                        },
+                        "IfcSlab": {
+                          "description": "Horizontal structural element",
+                          "semantic_frame": "Building_Component",
+                          "frame_elements": {
+                            "core": ["Component_Type", "Material", "Function", "Location"],
+                            "peripheral": ["Installation_Date", "Condition", "Load_Capacity"]
+                          },
+                          "lexical_units": ["floor", "ceiling", "slab", "deck", "platform"],
+                          "ifc_properties": {
+                            "structural": true,
+                            "load_bearing": true,
+                            "span_direction": "required"
+                          }
+                        },
+                        "IfcBeam": {
+                          "description": "Horizontal structural member",
+                          "semantic_frame": "Building_Component",
+                          "frame_elements": {
+                            "core": ["Component_Type", "Material", "Function", "Location"],
+                            "peripheral": ["Installation_Date", "Condition", "Load_Rating"]
+                          },
+                          "lexical_units": ["beam", "girder", "joist", "lintel"],
+                          "ifc_properties": {
+                            "structural": true,
+                            "load_bearing": true,
+                            "cross_section": "required"
+                          }
+                        },
+                        "IfcColumn": {
+                          "description": "Vertical structural member",
+                          "semantic_frame": "Building_Component",
+                          "frame_elements": {
+                            "core": ["Component_Type", "Material", "Function", "Location"],
+                            "peripheral": ["Installation_Date", "Condition", "Load_Rating"]
+                          },
+                          "lexical_units": ["column", "pillar", "post", "support"],
+                          "ifc_properties": {
+                            "structural": true,
+                            "load_bearing": true,
+                            "buckling_length": "required"
+                          }
+                        }
+                      },
+                      "opening_elements": {
+                        "IfcDoor": {
+                          "description": "Building element providing access",
+                          "semantic_frame": "Building_Component",
+                          "frame_elements": {
+                            "core": ["Component_Type", "Material", "Function", "Location"],
+                            "peripheral": ["Installation_Date", "Security_Level", "Access_Control"]
+                          },
+                          "lexical_units": ["door", "entrance", "exit", "gateway", "portal"],
+                          "ifc_properties": {
+                            "fire_rating": "optional",
+                            "security_rating": "optional",
+                            "operation_type": "required"
+                          }
+                        },
+                        "IfcWindow": {
+                          "description": "Building element providing light and ventilation",
+                          "semantic_frame": "Building_Component",
+                          "frame_elements": {
+                            "core": ["Component_Type", "Material", "Function", "Location"],
+                            "peripheral": ["Installation_Date", "Energy_Rating", "Maintenance"]
+                          },
+                          "lexical_units": ["window", "glazing", "opening", "light"],
+                          "ifc_properties": {
+                            "thermal_properties": "required",
+                            "glazing_type": "required",
+                            "operation_type": "optional"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  
+  "building_systems_hierarchy": {
+    "IfcSystem": {
+      "description": "Organized set of related building elements",
+      "semantic_frame": "Building_System",
+      "frame_elements": {
+        "core": ["System_Type", "Components", "Function", "Performance"],
+        "peripheral": ["Maintenance", "Control", "Monitoring"]
+      },
+      "lexical_units": ["system", "network", "installation", "equipment"],
+      "system_types": {
+        "IfcStructuralSystem": {
+          "description": "System of structural elements",
+          "components": ["IfcBeam", "IfcColumn", "IfcSlab", "IfcWall"],
+          "lexical_units": ["structure", "framework", "skeleton", "frame"]
+        },
+        "IfcBuildingSystem": {
+          "description": "Mechanical, electrical, or plumbing systems",
+          "components": ["IfcPipe", "IfcDuct", "IfcCable", "IfcOutlet"],
+          "lexical_units": ["MEP", "services", "utilities", "infrastructure"],
+          "subsystems": {
+            "HVAC": {
+              "components": ["IfcAirTerminal", "IfcDuct", "IfcFan", "IfcBoiler"],
+              "lexical_units": ["heating", "ventilation", "air conditioning", "climate control"]
+            },
+            "Electrical": {
+              "components": ["IfcCable", "IfcOutlet", "IfcLightFixture", "IfcSwitchingDevice"],
+              "lexical_units": ["power", "lighting", "electrical", "wiring"]
+            },
+            "Plumbing": {
+              "components": ["IfcPipe", "IfcSanitaryTerminal", "IfcValve", "IfcPump"],
+              "lexical_units": ["water", "drainage", "plumbing", "sanitary"]
+            },
+            "Fire_Safety": {
+              "components": ["IfcFireSuppressionTerminal", "IfcAlarm", "IfcSensor"],
+              "lexical_units": ["fire protection", "sprinkler", "alarm", "safety"]
+            }
+          }
+        }
+      }
+    }
+  },
+  
+  "distribution_systems": {
+    "IfcDistributionSystem": {
+      "description": "System for distributing resources throughout building",
+      "semantic_frame": "Distribution_Network",
+      "frame_elements": {
+        "core": ["Resource", "Distribution_Method", "Endpoints", "Control"],
+        "peripheral": ["Efficiency", "Monitoring", "Maintenance"]
+      },
+      "distribution_elements": {
+        "IfcDistributionFlowElement": {
+          "flow_terminals": ["IfcAirTerminal", "IfcElectricAppliance", "IfcSanitaryTerminal"],
+          "flow_fittings": ["IfcPipeFitting", "IfcDuctFitting", "IfcCableFitting"],
+          "flow_segments": ["IfcPipeSegment", "IfcDuctSegment", "IfcCableSegment"],
+          "flow_controls": ["IfcValve", "IfcDamper", "IfcSwitchingDevice"]
+        }
+      }
+    }
+  },
+  
+  "semantic_frame_mappings": {
+    "Building": {
+      "ifc_entity": "IfcBuilding",
+      "frame_elements": {
+        "Asset": "Building as physical asset",
+        "Function": "Building use type and purpose",
+        "Location": "Spatial context and site",
+        "Owner": "Ownership and responsibility",
+        "Manager": "Management and operation"
+      }
+    },
+    "Building_Component": {
+      "ifc_entities": ["IfcWall", "IfcSlab", "IfcBeam", "IfcColumn", "IfcDoor", "IfcWindow"],
+      "frame_elements": {
+        "Component_Type": "IFC element type classification",
+        "Material": "Material composition and properties",
+        "Function": "Functional role in building",
+        "Location": "Spatial placement and relationship"
+      }
+    },
+    "Building_System": {
+      "ifc_entities": ["IfcSystem", "IfcBuildingSystem", "IfcDistributionSystem"],
+      "frame_elements": {
+        "System_Type": "Classification of system function",
+        "Components": "Elements comprising the system",
+        "Function": "System purpose and operation",
+        "Performance": "System efficiency and output"
+      }
+    }
+  },
+  
+  "property_sets": {
+    "Pset_BuildingCommon": {
+      "description": "Common properties for buildings",
+      "properties": {
+        "BuildingID": "Unique identifier",
+        "YearOfConstruction": "Construction year",
+        "IsLandmarked": "Historic designation",
+        "GrossFloorArea": "Total floor area"
+      }
+    },
+    "Pset_SpaceCommon": {
+      "description": "Common properties for spaces",
+      "properties": {
+        "NetFloorArea": "Usable floor area",
+        "FinishCeilingHeight": "Interior height",
+        "OccupancyType": "Space use classification"
+      }
+    }
+  },
+  
+  "relationship_mappings": {
+    "spatial_containment": {
+      "IfcRelAggregates": "Part-whole relationships",
+      "IfcRelContainedInSpatialStructure": "Element-space relationships"
+    },
+    "connectivity": {
+      "IfcRelConnectsElements": "Physical connections",
+      "IfcRelConnectsPortToElement": "System connections"
+    },
+    "assignment": {
+      "IfcRelAssignsToGroup": "Group memberships",
+      "IfcRelAssignsToActor": "Actor responsibilities"
+    }
+  },
+  
+  "integration_principles": {
+    "semantic_preservation": "Maintain semantic frame structure while conforming to IFC hierarchy",
+    "standards_compliance": "Full adherence to ISO 16739-1 IFC specification",
+    "lexical_integration": "Preserve and enhance lexical unit associations",
+    "frame_element_mapping": "Map frame elements to IFC properties and relationships",
+    "professional_terminology": "Maintain building industry professional vocabulary"
+  },
+  
+  "implementation_guidelines": {
+    "hierarchy_traversal": "Follow IFC spatial decomposition from Project to Space",
+    "element_classification": "Use IFC entity types for precise component classification",
+    "property_assignment": "Apply appropriate property sets to each IFC entity",
+    "relationship_modeling": "Use IFC relationships to express semantic connections",
+    "frame_preservation": "Maintain frame-semantic structure as metadata layer"
+  },
+  
+  "semantic_frame_hierarchy": {
+    "Building": {
+      "frame_definition": "Physical structure designed for human occupancy following IFC building standards",
+      "ifc_mapping": "IfcBuilding",
+      "frame_elements": {
+        "structure": {
+          "description": "The building entity that houses systems and provides spaces",
+          "core_type": "Building_System",
+          "ifc_property": "Building classification and type",
+          "required": true
+        },
+        "components": {
+          "description": "Physical elements that constitute the building structure",
+          "core_type": "Component",
+          "frame_relation": "has_component",
+          "cardinality": "one_to_many",
+          "ifc_mapping": "IfcBuildingElement hierarchy",
+          "required": true
+        },
+        "systems": {
+          "description": "Integrated building systems that provide functionality",
+          "core_type": "System", 
+          "frame_relation": "has_system",
+          "cardinality": "one_to_many",
+          "ifc_mapping": "IfcSystem and IfcBuildingSystem",
+          "required": true
+        },
+        "processes": {
+          "description": "Operational procedures and workflows within the building",
+          "core_type": "Process",
+          "frame_relation": "performs_process",
+          "cardinality": "one_to_many",
+          "ifc_mapping": "IfcTask and IfcProcedure",
+          "required": false
+        }
+      }
+    },
+    "Component": {
+      "frame_definition": "Physical element that constitutes part of a building structure",
+      "ifc_mapping": "IfcBuildingElement and subclasses",
+      "frame_elements": {
+        "component_name": {
+          "description": "Identifier for the component",
+          "core_type": "String",
+          "ifc_property": "Name attribute",
+          "required": true
+        },
+        "component_type": {
+          "description": "Category of component (Structural, Mechanical, Electrical, etc.)",
+          "core_type": "ComponentType",
+          "ifc_mapping": "IfcElementType classification",
+          "required": true
+        },
+        "specification": {
+          "description": "Technical specifications and properties",
+          "core_type": "Specification",
+          "ifc_mapping": "Property sets (Pset_*)",
+          "required": false
+        },
+        "enables_system": {
+          "description": "Building system that this component enables or supports",
+          "core_type": "System",
+          "frame_relation": "enables",
+          "ifc_mapping": "IfcRelAssignsToGroup with IfcSystem",
+          "required": false
+        },
+        "location": {
+          "description": "Physical location within the building",
+          "core_type": "Location",
+          "ifc_mapping": "IfcLocalPlacement and spatial containment",
+          "required": false
+        }
+      }
+    },
+    "System": {
+      "frame_definition": "Integrated building system that provides specific functionality",
+      "ifc_mapping": "IfcSystem, IfcBuildingSystem, IfcDistributionSystem",
+      "frame_elements": {
+        "system_name": {
+          "description": "Identifier for the system",
+          "core_type": "String",
+          "ifc_property": "Name attribute",
+          "required": true
+        },
+        "system_type": {
+          "description": "Category of system (HVAC, Electrical, Plumbing, Safety, etc.)",
+          "core_type": "SystemType",
+          "ifc_mapping": "IfcSystemType and PredefinedType",
+          "required": true
+        },
+        "function": {
+          "description": "Primary purpose and operational scope",
+          "core_type": "Function",
+          "ifc_mapping": "Description and functional properties",
+          "required": true
+        },
+        "components": {
+          "description": "Components that constitute this system",
+          "core_type": "Component",
+          "frame_relation": "includes",
+          "cardinality": "one_to_many",
+          "ifc_mapping": "IfcRelAssignsToGroup relationships",
+          "required": true
+        },
+        "enabled_processes": {
+          "description": "Specific processes that this system makes possible",
+          "core_type": "Process",
+          "frame_relation": "enables",
+          "cardinality": "one_to_many",
+          "ifc_mapping": "IfcTask relationships and procedures",
+          "required": false
+        }
+      }
+    },
+    "Process": {
+      "frame_definition": "Operational procedure or workflow performed within the building",
+      "ifc_mapping": "IfcTask, IfcProcedure, IfcWorkPlan",
+      "frame_elements": {
+        "process_name": {
+          "description": "Identifier for the process",
+          "core_type": "String",
+          "ifc_property": "Name attribute",
+          "required": true
+        },
+        "process_type": {
+          "description": "Category of process (Environmental Control, Safety Management, etc.)",
+          "core_type": "ProcessType",
+          "ifc_mapping": "IfcTaskType and PredefinedType",
+          "required": true
+        },
+        "method": {
+          "description": "How the process is executed",
+          "core_type": "Method",
+          "ifc_mapping": "Description and procedural properties",
+          "required": true
+        },
+        "required_systems": {
+          "description": "Building systems that must be available to execute this process",
+          "core_type": "System",
+          "frame_relation": "requires",
+          "cardinality": "one_to_many",
+          "ifc_mapping": "IfcRelAssignsToResource relationships",
+          "required": true
+        },
+        "required_components": {
+          "description": "Components that must be available to execute this process",
+          "core_type": "Component",
+          "frame_relation": "requires",
+          "cardinality": "one_to_many",
+          "ifc_mapping": "IfcRelAssignsToResource relationships",
+          "required": false
+        },
+        "target": {
+          "description": "Goal or outcome of the process",
+          "core_type": "Target",
+          "ifc_mapping": "Task objectives and deliverables",
+          "required": true
+        }
+      }
+    }
+  },
+  
+  "frame_relationships": {
+    "Building_has_Component": {
+      "description": "Building contains physical components",
+      "source": "Building",
+      "target": "Component",
+      "relation_type": "composition",
+      "ifc_relationship": "IfcRelContainedInSpatialStructure"
+    },
+    "Building_has_System": {
+      "description": "Building contains integrated systems",
+      "source": "Building", 
+      "target": "System",
+      "relation_type": "composition",
+      "ifc_relationship": "IfcRelServicesBuildings"
+    },
+    "Component_enables_System": {
+      "description": "Components enable or support building systems",
+      "source": "Component",
+      "target": "System", 
+      "relation_type": "enablement",
+      "ifc_relationship": "IfcRelAssignsToGroup"
+    },
+    "System_enables_Process": {
+      "description": "Systems enable operational processes",
+      "source": "System",
+      "target": "Process",
+      "relation_type": "enablement",
+      "ifc_relationship": "IfcRelAssignsToResource"
+    },
+    "Process_requires_Component": {
+      "description": "Processes may require specific components",
+      "source": "Process",
+      "target": "Component",
+      "relation_type": "dependency",
+      "ifc_relationship": "IfcRelAssignsToResource"
+    }
+  }
+}

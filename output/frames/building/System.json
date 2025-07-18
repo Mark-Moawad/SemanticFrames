@@ -1,0 +1,381 @@
+{
+  "frame": "System",
+  "description": "Physical or logical system that constitutes part of building infrastructure, following IFC System definitions and building management practices",
+  "lexical_units": [
+    "HVAC system",
+    "building envelope",
+    "building services",
+    "electrical system",
+    "equipment",
+    "facade",
+    "fire safety system",
+    "infrastructure",
+    "infrastructures",
+    "installation",
+    "mechanical system",
+    "network",
+    "plumbing system",
+    "security system",
+    "structural system",
+    "subsystem",
+    "system",
+    "utilities"
+  ],
+  "frame_elements": {
+    "core": {
+      "System": {
+        "description": "The building system entity that provides specific infrastructure",
+        "semantic_type": "Physical_entity"
+      },
+      "Building": {
+        "description": "The building that contains this system",
+        "semantic_type": "Physical_entity"
+      },
+      "Function": {
+        "description": "The primary purpose or service this system provides",
+        "semantic_type": "State_of_affairs"
+      }
+    },
+    "peripheral": {
+      "Components": {
+        "description": "Individual elements that comprise the system",
+        "semantic_type": "Physical_entity"
+      },
+      "Specifications": {
+        "description": "Technical parameters, performance criteria, and requirements",
+        "semantic_type": "Attribute"
+      },
+      "Installer": {
+        "description": "The contractor or team that installed the system",
+        "semantic_type": "Sentient",
+        "lexicon_reference": "actor - person, organization or organizational unit involved in a construction process"
+      },
+      "Maintainer": {
+        "description": "The party responsible for system maintenance",
+        "semantic_type": "Sentient"
+      },
+      "Installation_date": {
+        "description": "When the system was installed or commissioned",
+        "semantic_type": "Time"
+      },
+      "Capacity": {
+        "description": "Maximum operational capacity or performance level",
+        "semantic_type": "Attribute"
+      },
+      "Energy_consumption": {
+        "description": "Power or energy requirements for system operation",
+        "semantic_type": "Attribute"
+      }
+    }
+  },
+  "frame_relations": {
+    "inherits_from": [
+      "Building"
+    ],
+    "is_inherited_by": [
+      "Building_Component"
+    ],
+    "precedes": [
+      "Building_Function"
+    ],
+    "is_preceded_by": [],
+    "is_causative_of": [
+      "Building_Function"
+    ],
+    "is_inchoative_of": [],
+    "uses": [
+      "Building_Component"
+    ],
+    "subframe_of": [
+      "Building"
+    ],
+    "has_subframes": [
+      "Building_Component"
+    ]
+  },
+  "system_types": {
+    "Structural_System": {
+      "description": "Load-bearing elements and structural framework",
+      "components": [
+        "beams",
+        "columns",
+        "slabs",
+        "foundations",
+        "walls"
+      ]
+    },
+    "HVAC_System": {
+      "description": "Heating, ventilation, and air conditioning infrastructure",
+      "components": [
+        "ducts",
+        "vents",
+        "chillers",
+        "boilers",
+        "sensors"
+      ]
+    },
+    "Electrical_System": {
+      "description": "Power distribution and electrical infrastructure",
+      "components": [
+        "panels",
+        "outlets",
+        "wiring",
+        "lighting",
+        "switches"
+      ]
+    },
+    "Plumbing_System": {
+      "description": "Water supply and drainage infrastructure",
+      "components": [
+        "pipes",
+        "valves",
+        "fixtures",
+        "pumps",
+        "meters"
+      ]
+    },
+    "Building_Envelope": {
+      "description": "Exterior boundary separating interior from exterior",
+      "components": [
+        "walls",
+        "windows",
+        "doors",
+        "roof",
+        "insulation"
+      ]
+    }
+  },
+  "iso_standards_alignment": {
+    "ISO_16739_1": {
+      "description": "IFC Data Schema - System definitions",
+      "mapped_elements": {
+        "System": "IfcSystem and IfcDistributionSystem",
+        "Components": "IFC Element hierarchy",
+        "Function": "IfcSystemFunctionEnum"
+      }
+    }
+  },
+  "lexicon_integration": {
+    "source": "building_lexicon.json",
+    "key_terms": [
+      "actor"
+    ],
+    "augmentation_date": "2025-07-17",
+    "framenet_integration": true
+  },
+  "framenet_connections": {
+    "primary_frame": "System",
+    "related_frames": [
+      "Network",
+      "Infrastructure",
+      "Building_subparts"
+    ],
+    "framenet_examples": [
+      {
+        "frame": "Infrastructure",
+        "target": "infrastructures",
+        "sentence": "He spoke at a luncheon with local businessmen Thursday , where he explained his country 's efforts to improve industrial infrastructures with foreign investments .",
+        "frame_elements": [
+          {
+            "fe_name": "Activity",
+            "text": "industrial"
+          },
+          {
+            "fe_name": "Infrastructure",
+            "text": "infrastructures"
+          }
+        ]
+      },
+      {
+        "frame": "Infrastructure",
+        "target": "infrastructure",
+        "sentence": "India needs foreign investment to improve its outmoded infrastructure , and it is still starved of the electrical power needed for economic growth .",
+        "frame_elements": [
+          {
+            "fe_name": "Descriptor",
+            "text": "outmoded"
+          },
+          {
+            "fe_name": "Possessor",
+            "text": "its"
+          },
+          {
+            "fe_name": "Infrastructure",
+            "text": "infrastructure"
+          }
+        ]
+      },
+      {
+        "frame": "Infrastructure",
+        "target": "infrastructure",
+        "sentence": "However , as it would have to develop Hong Kong 's information infrastructure , the bureau should create four new permanent posts .",
+        "frame_elements": [
+          {
+            "fe_name": "Possessor",
+            "text": "Hong Kong 's"
+          },
+          {
+            "fe_name": "Resource",
+            "text": "information"
+          },
+          {
+            "fe_name": "Infrastructure",
+            "text": "infrastructure"
+          }
+        ]
+      },
+      {
+        "frame": "Infrastructure",
+        "target": "infrastructure",
+        "sentence": "`` Our aim is to develop the banking infrastructure , cope with global banking modernization , accelerate economic activity and facilitate procedures at a time of high competition worldwide , '' he added .",
+        "frame_elements": [
+          {
+            "fe_name": "Activity",
+            "text": "banking"
+          },
+          {
+            "fe_name": "Infrastructure",
+            "text": "infrastructure"
+          }
+        ]
+      },
+      {
+        "frame": "Infrastructure",
+        "target": "infrastructure",
+        "sentence": "Orentlicher said Rwanda does not have the infrastructure or resources to administer justice .",
+        "frame_elements": [
+          {
+            "fe_name": "Activity",
+            "text": "to administer justice"
+          },
+          {
+            "fe_name": "Infrastructure",
+            "text": "infrastructure"
+          }
+        ]
+      },
+      {
+        "frame": "Infrastructure",
+        "target": "infrastructure",
+        "sentence": "Russia , which has strong ties to Sevastopol and the Crimea , had insisted on using the entire fleet infrastructure in Sevastopol as well as some other Ukrainian harbors --- conditions Ukraine had resisted .",
+        "frame_elements": [
+          {
+            "fe_name": "Resource",
+            "text": "fleet"
+          },
+          {
+            "fe_name": "Place",
+            "text": "in Sevastopol"
+          },
+          {
+            "fe_name": "Infrastructure",
+            "text": "infrastructure"
+          }
+        ]
+      },
+      {
+        "frame": "Infrastructure",
+        "target": "infrastructure",
+        "sentence": "Despite significant renovation efforts launched under Sobchak , residents say much of the city infrastructure needs urgent repairs , notably its subway , roads and sewage system .",
+        "frame_elements": [
+          {
+            "fe_name": "Possessor",
+            "text": "city"
+          },
+          {
+            "fe_name": "Infrastructure",
+            "text": "infrastructure"
+          }
+        ]
+      },
+      {
+        "frame": "Infrastructure",
+        "target": "infrastructures",
+        "sentence": "DEPUTY Prime Minister and Finance Minister Datuk Seri Anwar Ibrahim yesterday urged telecommunication companies to consider merging and assisting the Government in enhancing the country 's telecommunications infrastructures .",
+        "frame_elements": [
+          {
+            "fe_name": "Activity",
+            "text": "telecommunications"
+          },
+          {
+            "fe_name": "Possessor",
+            "text": "the country 's"
+          },
+          {
+            "fe_name": "Infrastructure",
+            "text": "infrastructures"
+          }
+        ]
+      },
+      {
+        "frame": "Infrastructure",
+        "target": "infrastructure",
+        "sentence": "Before leaving Riyadh , Perry said he received guarantees from Saudi Arabia for U.S. military access to its ports and airfields after he displayed spy photo evidence of Iraq 's new military infrastructure .",
+        "frame_elements": [
+          {
+            "fe_name": "Possessor",
+            "text": "Iraq 's"
+          },
+          {
+            "fe_name": "Descriptor",
+            "text": "new"
+          },
+          {
+            "fe_name": "Activity",
+            "text": "military"
+          },
+          {
+            "fe_name": "Infrastructure",
+            "text": "infrastructure"
+          }
+        ]
+      },
+      {
+        "frame": "Infrastructure",
+        "target": "infrastructure",
+        "sentence": "Last week , he said Moscow might be satisfied if NATO guaranteed it would not move its military infrastructure , above all nuclear weapons , onto the territory of new members .",
+        "frame_elements": [
+          {
+            "fe_name": "Possessor",
+            "text": "its"
+          },
+          {
+            "fe_name": "Activity",
+            "text": "military"
+          },
+          {
+            "fe_name": "Infrastructure",
+            "text": "infrastructure"
+          }
+        ]
+      }
+    ]
+  },
+  "example_sentences": [
+    "The [System HVAC system] in this [Building office building] provides [Function climate control] throughout all floors.",
+    "The [Installer contractor] completed the [System electrical system] [Installation_date last month] with a [Capacity 400A] main panel.",
+    "This [System building envelope] consists of [Components windows, doors, and walls] that provide weather protection.",
+    "The [System HVAC system] maintains [Function comfortable temperatures] throughout the [Building office complex].",
+    "The [System electrical system] distributes [Function power] to all [Components outlets and fixtures].",
+    "The [System structural system] provides [Function load-bearing support] through [Components steel beams and columns]."
+  ],
+  "metadata": {
+    "frame_version": "1.0",
+    "created_date": "2025-07-17",
+    "parent_frame": "Building",
+    "iso_standards": [
+      "ISO 16739-1:2018"
+    ],
+    "description": "Building system frame for infrastructure and building services"
+  },
+  "framenet_statistics": {
+    "total_examples_found": 15,
+    "building_relevant_examples": 15,
+    "new_lexical_units_added": 1,
+    "target_framenet_frames": [
+      "Infrastructure",
+      "Network",
+      "System"
+    ]
+  }
+}
