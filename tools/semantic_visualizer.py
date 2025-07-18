@@ -1451,8 +1451,10 @@ def main():
     
     # Check if extraction results exist
     extraction_files = [
-        "output/extractions/construction_robotics_extraction.json",
-        "output/extractions/test_extraction_results.json"
+        "output/extractions/corrected_test_extraction_results.json",
+        "output/extractions/test_extraction_results.json",
+        "output/extractions/combined_test_results.json",
+        "output/extractions/construction_robotics_extraction.json"
     ]
     
     extraction_file = None

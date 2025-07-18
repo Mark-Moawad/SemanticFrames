@@ -5,7 +5,12 @@
     "manipulation", "locomotion", "navigation", "sensing", "perception", "grasping",
     "mobility", "dexterity", "precision", "autonomy", "learning", "adaptation",
     "object recognition", "path planning", "obstacle avoidance", "collaboration",
-    "communication", "decision making", "reasoning", "planning"
+    "communication", "decision making", "reasoning", "planning",
+    "autonomous navigation", "navigation capability", "manipulation capability",
+    "grasping capability", "perception capability", "sensing capability",
+    "path planning capability", "obstacle avoidance capability", "precise manipulation",
+    "adaptive grasping", "collaborative capability", "learning capability",
+    "mobile platform", "positioning capability", "tracking capability"
   ],
   "frame_elements": {
     "core": {

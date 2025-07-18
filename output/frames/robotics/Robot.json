@@ -3,8 +3,11 @@
   "description": "Root semantic frame for robot entity following ISO 8373 standards and SRDL principles",
   "lexical_units": [
     "robot", "industrial robot", "service robot", "autonomous system", 
-    "robotic system", "manipulator", "mobile robot", "humanoid robot",
-    "collaborative robot", "cobot", "robotic device", "android"
+    "robotic system", "manipulator", "mobile robot", "autonomous robot", 
+    "humanoid robot", "collaborative robot", "cobot", "robotic device", 
+    "android", "mobile manipulation robot", "autonomous mobile robot",
+    "articulated robot", "cartesian robot", "cylindrical robot", 
+    "spherical robot", "scara robot", "delta robot", "parallel robot"
   ],
   "frame_elements": {
     "core": {

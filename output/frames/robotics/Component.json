@@ -2,10 +2,15 @@
   "frame": "Component",
   "description": "Physical component or module that is part of a robot system, following SRDL modularity principles",
   "lexical_units": [
-    "actuator", "sensor", "end-effector", "manipulator", "gripper", "controller",
-    "servo", "motor", "encoder", "camera", "lidar", "proximity sensor", 
-    "force sensor", "vision system", "drive system", "arm", "joint", "link",
-    "base", "wrist", "tool", "effector", "mechanical unit"
+    "actuator", "sensor", "end-effector", "gripper", "controller",
+    "servo", "motor", "encoder", "camera", "lidar", "joint", "link",
+    "base", "wrist", "tool", "effector", "mechanical unit",
+    "manipulator arm", "robotic arm", "robot arm", "manipulator", "arm",
+    "camera sensor", "vision sensor", "lidar sensor", "ultrasonic sensor",
+    "proximity sensor", "force sensor", "torque sensor", "pressure sensor",
+    "servo motor", "stepper motor", "pneumatic actuator", "hydraulic actuator",
+    "robot gripper", "robotic gripper", "parallel gripper", "vacuum gripper",
+    "end effector", "vision system", "drive system"
   ],
   "frame_elements": {
     "core": {

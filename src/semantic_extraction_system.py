@@ -136,12 +136,29 @@ EXTRACT AND STRUCTURE:
 3. Determine capabilities and what actions they enable
 4. Map relationships between frames (Robot uses Components, has Capabilities, performs Actions)
 
-Return a JSON structure matching our semantic frames with extracted information.
+Return ONLY a valid JSON structure matching our semantic frames. Do not include any markdown formatting or explanation text.
 
 ROBOT DESCRIPTION:
 {text}
 
-EXTRACTED SEMANTIC KNOWLEDGE:
+RESPOND WITH ONLY THIS JSON FORMAT:
+{{
+  "Robot": {{
+    "Agent": "robot_name",
+    "Function": "primary_purpose",
+    "Domain": "application_area",
+    "Properties": {{"payload": "value", "reach": "value"}}
+  }},
+  "Component": [
+    {{"name": "component_name", "type": "component_type"}}
+  ],
+  "Capability": [
+    {{"name": "capability_name", "enabled_actions": ["action1", "action2"]}}
+  ],
+  "Action": [
+    {{"name": "action_name"}}
+  ]
+}}
 """,
             
             "building": """
@@ -160,12 +177,29 @@ EXTRACT AND STRUCTURE:
 4. Identify operational processes and procedures
 5. Map relationships between frames (Building contains Systems, Systems have Components, Components enable Processes)
 
-Return a JSON structure matching our semantic frames with extracted information.
+Return ONLY a valid JSON structure matching our semantic frames. Do not include any markdown formatting or explanation text.
 
 BUILDING DESCRIPTION:
 {text}
 
-EXTRACTED SEMANTIC KNOWLEDGE:
+RESPOND WITH ONLY THIS JSON FORMAT:
+{{
+  "Building": {{
+    "Asset": "building_name",
+    "Function": "building_purpose", 
+    "Location": "building_location",
+    "Properties": {{"height": "value", "area": "value"}}
+  }},
+  "System": [
+    {{"name": "system_name", "type": "system_type"}}
+  ],
+  "Component": [
+    {{"name": "component_name", "system": "parent_system"}}
+  ],
+  "Process": [
+    {{"name": "process_name", "system": "related_system"}}
+  ]
+}}
 """,
             
             "general": """
@@ -181,10 +215,19 @@ CROSS-DOMAIN MAPPING:
 
 Extract and organize information into appropriate semantic frames, noting any cross-domain relationships.
 
+Return ONLY a valid JSON structure. Do not include any markdown formatting or explanation text.
+
 TEXT DESCRIPTION:
 {text}
 
-SEMANTIC ANALYSIS:
+RESPOND WITH ONLY THIS JSON FORMAT:
+{{
+  "Robot": {{"Agent": "robot_name", "Function": "robot_purpose"}},
+  "Building": {{"Asset": "building_name", "Function": "building_purpose"}},
+  "Cross_Domain_Relations": [
+    {{"robot_element": "element", "building_element": "element", "relationship": "type"}}
+  ]
+}}
 """
         }
     
@@ -283,10 +326,20 @@ SEMANTIC ANALYSIS:
     def _parse_llm_response(self, response: str, domain: str) -> Dict[str, Any]:
         """Parse LLM response into structured semantic frames"""
         try:
+            # Remove markdown code blocks if present
+            cleaned_response = response.strip()
+            if cleaned_response.startswith('```json'):
+                cleaned_response = cleaned_response[7:]  # Remove ```json
+            if cleaned_response.startswith('```'):
+                cleaned_response = cleaned_response[3:]   # Remove ```
+            if cleaned_response.endswith('```'):
+                cleaned_response = cleaned_response[:-3]  # Remove trailing ```
+            
             # Try to extract JSON from response
-            json_match = re.search(r'\{.*\}', response, re.DOTALL)
+            json_match = re.search(r'\{.*\}', cleaned_response, re.DOTALL)
             if json_match:
-                extracted_data = json.loads(json_match.group())
+                json_str = json_match.group()
+                extracted_data = json.loads(json_str)
                 return extracted_data
             else:
                 # Fallback: parse structured text response

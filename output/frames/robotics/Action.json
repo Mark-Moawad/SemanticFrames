@@ -5,7 +5,12 @@
     "pick", "place", "grasp", "release", "move", "navigate", "rotate", "lift",
     "carry", "transport", "assemble", "disassemble", "inspect", "monitor",
     "detect", "recognize", "avoid", "approach", "follow", "track", "search",
-    "scan", "manipulate", "operate", "activate", "deactivate", "calibrate"
+    "scan", "manipulate", "operate", "activate", "deactivate", "calibrate",
+    "pick up", "put down", "pick-and-place operation",
+    "grasp object", "release object", "move to position", "navigate to location",
+    "transport object", "assembly operation", "inspection task", "monitoring task",
+    "object detection", "object recognition", "obstacle avoidance", "trajectory following",
+    "target tracking", "area search", "environment scan", "precise manipulation"
   ],
   "frame_elements": {
     "core": {
