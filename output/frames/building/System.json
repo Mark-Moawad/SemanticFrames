@@ -38,7 +38,7 @@
     },
     "peripheral": {
       "Components": {
-        "description": "Individual elements that comprise the system",
+        "description": "Individual elements that comprise this system",
         "semantic_type": "Physical_entity"
       },
       "Specifications": {

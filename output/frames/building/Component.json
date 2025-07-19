@@ -38,7 +38,7 @@
         "description": "The individual building element or part",
         "semantic_type": "Physical_entity"
       },
-      "System": {
+      "Whole": {
         "description": "The building system that contains this component",
         "semantic_type": "Physical_entity"
       },

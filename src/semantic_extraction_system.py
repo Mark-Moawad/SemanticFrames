@@ -165,7 +165,7 @@ RESPOND WITH ONLY THIS JSON FORMAT:
 You are an expert in building systems and semantic frame analysis. Extract semantic knowledge from the building description and organize it according to our semantic frame structure.
 
 BUILDING SEMANTIC FRAMES:
-- Building: Core building entity with Asset/Function/Location elements
+- Building: Core building entity with Asset/Function/Location elements  
 - System: Building systems like HVAC, electrical, structural, security
 - Component: Physical components like ducts, sensors, beams, doors
 - Process: Operational processes like heating, monitoring, maintenance
@@ -174,8 +174,8 @@ EXTRACT AND STRUCTURE:
 1. Identify the main building entity and its properties
 2. List all building systems mentioned
 3. Determine components within each system
-4. Identify operational processes and procedures
-5. Map relationships between frames (Building contains Systems, Systems have Components, Components enable Processes)
+4. Identify operational processes and procedures  
+5. Map relationships between frames (Building contains Systems, Systems contain Components, Systems enable Processes)
 
 Return ONLY a valid JSON structure matching our semantic frames. Do not include any markdown formatting or explanation text.
 
@@ -483,14 +483,40 @@ RESPOND WITH ONLY THIS JSON FORMAT:
         
         return results
     
+    def process_robotics_descriptions(self, descriptions: List[str]) -> List[ExtractionResult]:
+        """Process robotics descriptions specifically"""
+        results = []
+        
+        print(f"🤖 Processing {len(descriptions)} robotics descriptions...")
+        
+        for i, description in enumerate(descriptions, 1):
+            print(f"📝 Processing robotics description {i}/{len(descriptions)}")
+            result = self.extract_semantic_knowledge(description, domain="robotics")
+            results.append(result)
+        
+        return results
+    
+    def process_building_descriptions(self, descriptions: List[str]) -> List[ExtractionResult]:
+        """Process building descriptions specifically"""
+        results = []
+        
+        print(f"🏗️ Processing {len(descriptions)} building descriptions...")
+        
+        for i, description in enumerate(descriptions, 1):
+            print(f"📝 Processing building description {i}/{len(descriptions)}")
+            result = self.extract_semantic_knowledge(description, domain="building")
+            results.append(result)
+        
+        return results
+    
     def build_knowledge_graph(self, extraction_results: List[ExtractionResult]) -> nx.DiGraph:
-        """Build a knowledge graph from extraction results"""
+        """Build a knowledge graph from extraction results (domain-specific, no cross-domain interactions)"""
         graph = nx.DiGraph()
         
         for result in extraction_results:
-            # Add nodes for each frame
+            # Add nodes for each frame within the same domain
             for frame_name, frame_data in result.extracted_frames.items():
-                node_id = f"{result.domain}_{frame_name}"
+                node_id = f"{result.domain}_{frame_name}_{id(result)}"  # Unique ID per result
                 graph.add_node(
                     node_id,
                     frame_type=frame_name,
@@ -500,13 +526,25 @@ RESPOND WITH ONLY THIS JSON FORMAT:
                     confidence=result.confidence_scores.get(frame_name, 0.0)
                 )
             
-            # Add edges for relationships
+            # Add edges for relationships within the same domain only
             for source, relation, target in result.relationships:
-                source_id = f"{result.domain}_{source}"
-                target_id = f"{result.domain}_{target}"
+                source_id = f"{result.domain}_{source}_{id(result)}"
+                target_id = f"{result.domain}_{target}_{id(result)}"
                 graph.add_edge(source_id, target_id, relation=relation)
         
         return graph
+    
+    def build_robotics_knowledge_graph(self, robotics_results: List[ExtractionResult]) -> nx.DiGraph:
+        """Build a knowledge graph specifically for robotics domain"""
+        # Filter to ensure only robotics results
+        robotics_only = [r for r in robotics_results if r.domain == "robotics"]
+        return self.build_knowledge_graph(robotics_only)
+    
+    def build_building_knowledge_graph(self, building_results: List[ExtractionResult]) -> nx.DiGraph:
+        """Build a knowledge graph specifically for building domain"""
+        # Filter to ensure only building results
+        building_only = [r for r in building_results if r.domain == "building"]
+        return self.build_knowledge_graph(building_only)
     
     def save_extraction_results(self, results: List[ExtractionResult], output_file: str):
         """Save extraction results to JSON file"""
@@ -530,42 +568,126 @@ RESPOND WITH ONLY THIS JSON FORMAT:
             json.dump(serializable_results, f, indent=2, ensure_ascii=False)
         
         print(f"💾 Extraction results saved to: {output_path}")
+    
+    def save_robotics_results(self, robotics_results: List[ExtractionResult]):
+        """Save robotics-specific extraction results"""
+        # Filter to ensure only robotics results
+        robotics_only = [r for r in robotics_results if r.domain == "robotics"]
+        self.save_extraction_results(robotics_only, "robot_test_result.json")
+    
+    def save_building_results(self, building_results: List[ExtractionResult]):
+        """Save building-specific extraction results"""
+        # Filter to ensure only building results
+        building_only = [r for r in building_results if r.domain == "building"]
+        self.save_extraction_results(building_only, "building_test_result.json")
+    
+    def save_knowledge_graph(self, graph: nx.DiGraph, filename: str = "knowledge_graph.json"):
+        """Save knowledge graph to JSON file"""
+        output_path = self.workspace_path / "output" / "extractions" / filename
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Convert graph to serializable format
+        graph_data = {
+            "nodes": [],
+            "edges": []
+        }
+        
+        # Add nodes
+        for node_id, node_data in graph.nodes(data=True):
+            graph_data["nodes"].append({
+                "id": node_id,
+                "frame_type": node_data.get("frame_type"),
+                "domain": node_data.get("domain"),
+                "confidence": node_data.get("confidence", 0.0),
+                "source_text": node_data.get("source_text", ""),
+                "data": node_data.get("data", {})
+            })
+        
+        # Add edges
+        for source, target, edge_data in graph.edges(data=True):
+            graph_data["edges"].append({
+                "source": source,
+                "target": target,
+                "relation": edge_data.get("relation", "")
+            })
+        
+        graph_data["metadata"] = {
+            "num_nodes": graph.number_of_nodes(),
+            "num_edges": graph.number_of_edges(),
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(graph_data, f, indent=2, ensure_ascii=False)
+        
+        print(f"📊 Knowledge graph saved to: {output_path}")
 
 def main():
-    """Example usage of the Semantic Extraction System"""
+    """Example usage of the Semantic Extraction System with separate domain processing"""
     
     # Initialize the system
     extractor = SemanticExtractionSystem()
     
-    # Example robot description
-    robot_description = """
-    The mobile manipulation robot is equipped with a 6-DOF robotic arm for precise object handling.
-    It features an RGB-D camera for object detection and a LiDAR sensor for navigation.
-    The robot can autonomously navigate through building environments, inspect electrical outlets,
-    and perform maintenance tasks. It has a gripper with force feedback for safe object manipulation.
-    """
+    # Example robot descriptions (multiple for testing)
+    robot_descriptions = [
+        """
+        The mobile manipulation robot is equipped with a 6-DOF robotic arm for precise object handling.
+        It features an RGB-D camera for object detection and a LiDAR sensor for navigation.
+        The robot can autonomously navigate through building environments, inspect electrical outlets,
+        and perform maintenance tasks. It has a gripper with force feedback for safe object manipulation.
+        """,
+        """
+        The autonomous inspection robot has a camera sensor and ultrasonic sensors for navigation.
+        It can detect defects in building structures and measure dimensional accuracy.
+        The robot is equipped with a mobile base and can operate in indoor environments.
+        """
+    ]
     
-    # Example building description  
-    building_description = """
-    The smart office building has an advanced HVAC system with automated temperature control.
-    It includes motion sensors for occupancy detection, LED lighting with dimming capabilities,
-    and a fire suppression system with smoke detectors. The building's electrical system
-    features smart outlets that can be monitored remotely for energy consumption.
-    """
+    # Example building descriptions (multiple for testing)
+    building_descriptions = [
+        """
+        The smart office building has an advanced HVAC system with automated temperature control.
+        It includes motion sensors for occupancy detection, LED lighting with dimming capabilities,
+        and a fire suppression system with smoke detectors. The building's electrical system
+        features smart outlets that can be monitored remotely for energy consumption.
+        """,
+        """
+        The automated residential building features a climate control system and electrical panels.
+        The building has integrated security systems and energy management capabilities.
+        Smart sensors monitor the building's environmental conditions and optimize energy usage.
+        """
+    ]
     
-    # Extract semantic knowledge
-    robot_result = extractor.extract_semantic_knowledge(robot_description, "robotics")
-    building_result = extractor.extract_semantic_knowledge(building_description, "building")
+    # Process domains separately
+    print("🤖 Processing robotics descriptions...")
+    robotics_results = extractor.process_robotics_descriptions(robot_descriptions)
     
-    # Build knowledge graph
-    results = [robot_result, building_result]
-    knowledge_graph = extractor.build_knowledge_graph(results)
+    print("\n🏗️ Processing building descriptions...")
+    building_results = extractor.process_building_descriptions(building_descriptions)
     
-    # Save results
-    extractor.save_extraction_results(results, "example_extractions.json")
+    # Build separate knowledge graphs
+    print("\n📊 Building separate knowledge graphs...")
+    robotics_graph = extractor.build_robotics_knowledge_graph(robotics_results)
+    building_graph = extractor.build_building_knowledge_graph(building_results)
     
-    print("🎯 Semantic extraction completed!")
-    print(f"📊 Knowledge graph has {knowledge_graph.number_of_nodes()} nodes and {knowledge_graph.number_of_edges()} edges")
+    # Combine graphs for overall knowledge representation (no cross-domain interactions)
+    combined_graph = nx.compose(robotics_graph, building_graph)
+    
+    # Save domain-specific results
+    print("\n💾 Saving results...")
+    extractor.save_robotics_results(robotics_results)
+    extractor.save_building_results(building_results)
+    extractor.save_knowledge_graph(combined_graph, "knowledge_graph.json")
+    
+    print("\n🎯 Semantic extraction completed!")
+    print(f"🤖 Robotics: {len(robotics_results)} extractions, {robotics_graph.number_of_nodes()} nodes, {robotics_graph.number_of_edges()} edges")
+    print(f"🏗️ Building: {len(building_results)} extractions, {building_graph.number_of_nodes()} nodes, {building_graph.number_of_edges()} edges")
+    print(f"📊 Combined knowledge graph: {combined_graph.number_of_nodes()} total nodes, {combined_graph.number_of_edges()} total edges")
+    
+    print("\n📁 Output files generated:")
+    print("   - output/extractions/robot_test_result.json")
+    print("   - output/extractions/building_test_result.json") 
+    print("   - output/extractions/knowledge_graph.json")
 
 if __name__ == "__main__":
     main()

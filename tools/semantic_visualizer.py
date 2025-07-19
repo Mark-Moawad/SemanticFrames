@@ -154,17 +154,50 @@ class SemanticVisualizationSystem:
                 if self.knowledge_graph.has_node(source_id) and self.knowledge_graph.has_node(target_id):
                     self.knowledge_graph.add_edge(source_id, target_id, relation=relation)
     
-    def _identify_lexical_units(self, text: str, extracted_frames: Dict) -> List[Tuple[str, int, int, List[str], List[str]]]:
+    def _identify_lexical_units(self, text: str, extracted_frames: Dict, lexical_units_data: Dict = None) -> List[Tuple[str, int, int, List[str], List[str]]]:
         """
-        Identify lexical units (words/phrases) that evoke semantic frames using the real extraction system
+        Identify lexical units (words/phrases) that evoke semantic frames
         
+        Args:
+            text: Source text to analyze
+            extracted_frames: Dictionary of extracted semantic frames
+            lexical_units_data: Pre-extracted lexical units with frame evocations from JSON data
+            
         Returns:
             List of tuples: (lexical_unit, start_pos, end_pos, explicit_frames, implicit_frames)
         """
         lexical_annotations = []
         
-        if self.extraction_system:
-            # Use the real extraction system
+        # First, try to use pre-extracted lexical units data if available
+        if lexical_units_data:
+            text_lower = text.lower()
+            for lexical_unit, unit_data in lexical_units_data.items():
+                # Find all occurrences of this lexical unit in the text
+                unit_pattern = re.compile(re.escape(lexical_unit), re.IGNORECASE)
+                for match in unit_pattern.finditer(text):
+                    start_pos = match.start()
+                    end_pos = match.end()
+                    
+                    # Get explicit frame evocation
+                    explicit_frames = [unit_data['frame']] if unit_data.get('evocation') == 'explicit' else []
+                    
+                    # Get implicit frame evocations
+                    implicit_frames = []
+                    if 'implicit_frames' in unit_data:
+                        for implicit_frame in unit_data['implicit_frames']:
+                            if implicit_frame.get('evocation') == 'explicit':
+                                explicit_frames.append(implicit_frame['frame'])
+                            elif implicit_frame.get('evocation') == 'implicit':
+                                implicit_frames.append(implicit_frame['frame'])
+                    
+                    # If primary frame is implicit, add to implicit list
+                    if unit_data.get('evocation') == 'implicit':
+                        implicit_frames.append(unit_data['frame'])
+                    
+                    lexical_annotations.append((lexical_unit, start_pos, end_pos, explicit_frames, implicit_frames))
+        
+        elif self.extraction_system:
+            # Fallback: Use the real extraction system
             # Determine domain from extracted frames
             has_robot = 'Robot' in extracted_frames
             has_building = 'Building' in extracted_frames
@@ -268,7 +301,7 @@ class SemanticVisualizationSystem:
                 r'\b(?:commercial\s+building|office\s+building|residential\s+building)\b': (['Building'], ['System']),
                 r'\b(?:smart\s+building|intelligent\s+building)\b': (['Building'], ['System', 'Process']),
                 
-                # Building Component patterns - explicit Component, may imply System
+                # Building Component patterns - explicit Component, belongs to System
                 r'\b(?:hvac|heating|ventilation|air\s+conditioning)\b': (['Component'], ['System']),
                 r'\b(?:electrical\s+(?:panel|system|equipment))\b': (['Component'], ['System']),
                 r'\b(?:plumbing|pipe|duct|valve)\b': (['Component'], ['System']),
@@ -331,11 +364,11 @@ class SemanticVisualizationSystem:
                 last_end = annotation[2]
         return filtered_annotations
     
-    def _create_annotated_text(self, text: str, extracted_frames: Dict) -> html.Div:
+    def _create_annotated_text(self, text: str, extracted_frames: Dict, lexical_units_data: Dict = None) -> html.Div:
         """
         Create annotated text with highlighted lexical units and hover tooltips showing explicit/implicit frames
         """
-        annotations = self._identify_lexical_units(text, extracted_frames)
+        annotations = self._identify_lexical_units(text, extracted_frames, lexical_units_data)
         
         if not annotations:
             # No annotations found, return plain text
@@ -1049,7 +1082,7 @@ class SemanticVisualizationSystem:
                             }
                         })
             
-            # Create system nodes for BUILDING DOMAIN (Component → System)
+            # Create system nodes for BUILDING DOMAIN (Building → System → Component)
             system_ids = {}  # Track system IDs for process connections
             if 'System' in extracted_frames:
                 systems = extracted_frames['System']
@@ -1077,22 +1110,22 @@ class SemanticVisualizationSystem:
                     })
                     created_node_ids.add(sys_id)
                     
-                    # Connect systems to components that enable them
-                    # Look for components that enable this system
+                    # Connect systems to components they contain
+                    # Look for components contained within this system
                     if 'Component' in extracted_frames:
                         components = extracted_frames['Component']
                         for comp_name, comp_data in components.items():
                             if comp_name == 'frame':
                                 continue
-                            enabled_system = comp_data.get('enables_system')
-                            if enabled_system == sys_name and comp_name in component_ids:
+                            parent_system = comp_data.get('system') or comp_data.get('parent_system')
+                            if parent_system == sys_name and comp_name in component_ids:
                                 comp_id = component_ids[comp_name]
-                                # Add edge from component to system
+                                # Add edge from system to component (system contains component)
                                 elements.append({
                                     'data': {
-                                        'source': comp_id,
-                                        'target': sys_id,
-                                        'relation': 'enables'
+                                        'source': sys_id,
+                                        'target': comp_id,
+                                        'relation': 'contains'
                                     }
                                 })
             
@@ -1260,9 +1293,10 @@ class SemanticVisualizationSystem:
             return dbc.Alert(f"Selected scenario is not from {domain_filter} domain", color="warning")
         source_text = result.get('source_text', 'No source text available')
         extracted_frames = result.get('extracted_frames', {})
+        lexical_units_data = result.get('lexical_units', {})
         
         # Create annotated text with lexical unit highlighting
-        annotated_text = self._create_annotated_text(source_text, extracted_frames)
+        annotated_text = self._create_annotated_text(source_text, extracted_frames, lexical_units_data)
         
         return html.Div([
             dbc.Row([
@@ -1449,12 +1483,13 @@ class SemanticVisualizationSystem:
 def main():
     """Main function to run the visualizer"""
     
-    # Check if extraction results exist
+    # Check if extraction results exist (prioritize domain-specific files)
     extraction_files = [
-        "output/extractions/corrected_test_extraction_results.json",
-        "output/extractions/test_extraction_results.json",
-        "output/extractions/combined_test_results.json",
-        "output/extractions/construction_robotics_extraction.json"
+        "output/extractions/test_extraction_results.json",  # Keep for backward compatibility
+        "output/extractions/robot_test_result.json",         # New robotics-specific file
+        "output/extractions/building_test_result.json",      # New building-specific file
+        "output/extractions/combined_test_results.json",     # Legacy
+        "output/extractions/construction_robotics_extraction.json"  # Legacy
     ]
     
     extraction_file = None
@@ -1466,8 +1501,8 @@ def main():
     if not extraction_file:
         print("⚠️  No extraction results found!")
         print("💡 Run one of these to generate extraction data:")
-        print("   python examples/construction_robotics_demo.py")
-        print("   python examples/test_system_structure.py")
+        print("   python src/semantic_extraction_system.py")
+        print("   python tests/test_extraction_system.py")
         
         # Create demo visualizer with no data
         visualizer = SemanticVisualizationSystem()

@@ -297,7 +297,7 @@ Provide comprehensive analysis including:
                 'key_concepts': ['asset', 'component', 'system', 'function', 'process'],
                 'professional_roles': ['architect', 'engineer', 'contractor', 'facility_manager'],
                 'expertise_areas': ['construction', 'MEP', 'structural', 'sustainability', 'operations'],
-                'frame_priorities': ['Building', 'Building_Component', 'Building_System', 'Building_Function', 'Building_Process']
+                'frame_priorities': ['Building', 'Building_System', 'Building_Component', 'Building_Process']
             },
             
             'robotics': {

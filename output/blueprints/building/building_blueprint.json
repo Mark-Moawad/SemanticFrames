@@ -358,10 +358,10 @@
           "ifc_mapping": "Property sets (Pset_*)",
           "required": false
         },
-        "enables_system": {
-          "description": "Building system that this component enables or supports",
+        "belongs_to_system": {
+          "description": "Building system that contains this component",
           "core_type": "System",
-          "frame_relation": "enables",
+          "frame_relation": "belongs_to",
           "ifc_mapping": "IfcRelAssignsToGroup with IfcSystem",
           "required": false
         },
@@ -476,11 +476,11 @@
       "relation_type": "composition",
       "ifc_relationship": "IfcRelServicesBuildings"
     },
-    "Component_enables_System": {
-      "description": "Components enable or support building systems",
-      "source": "Component",
-      "target": "System", 
-      "relation_type": "enablement",
+    "System_contains_Component": {
+      "description": "Systems contain components as constituent parts",
+      "source": "System",
+      "target": "Component", 
+      "relation_type": "containment",
       "ifc_relationship": "IfcRelAssignsToGroup"
     },
     "System_enables_Process": {
